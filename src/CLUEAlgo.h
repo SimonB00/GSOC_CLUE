@@ -31,7 +31,7 @@ public:
   float outlierDeltaFactor_;
   bool verbose_;
 
-  float dm = outlierDeltaFactor_ * dc_; // separation requirement for seeds (I suppose)
+  //float dm = outlierDeltaFactor_ * dc_; // separation requirement for seeds (I suppose)
     
   Points<N> points_;
   
@@ -94,37 +94,29 @@ public:
   void infoHits();
 
   void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, LayerTiles<N>& lt_, int point_id) {
-    //std::cout << __LINE__ << std::endl;
-    //std::cout << N_ << '\n';
     if(!N_) {
+      int binId = lt_.getGlobalBinByBin(base_vector);
+      // get the size of this bin
+      int binSize = lt_[binId].size();
+      
+      // iterate inside this bin
+      for (int binIter = 0; binIter < binSize; ++binIter) {
+        int j = lt_[binId][binIter];
+        // query N_{dc_}(i)
+        float dist_ij = distance(point_id, j);
         //std::cout << __LINE__ << std::endl;
-        int binId = lt_.getGlobalBinByBin(base_vector);
-        //std::cout << __LINE__ << std::endl;
-        // get the size of this bin
-        int binSize = lt_[binId].size();
-        //std::cout << "binSize " << binSize << '\n';
-        //std::cout << __LINE__ << std::endl;
-        
-        // iterate inside this bin
-        for (int binIter = 0; binIter < binSize; ++binIter) {
+        if(dist_ij <= dc_) {
+          // sum weights within N_{dc_}(i)
+          points_.rho.at(point_id) += (point_id == j ? 1.f : 0.5f) * points_.weight.at(j);
           //std::cout << __LINE__ << std::endl;
-          int j = lt_[binId][binIter];
-          //std::cout << __LINE__ << std::endl;
-          // query N_{dc_}(i)
-          float dist_ij = distance(point_id, j);
-          //std::cout << __LINE__ << std::endl;
-          if(dist_ij <= dc_) {
-            // sum weights within N_{dc_}(i)
-            points_.rho.at(point_id) += (point_id == j ? 1.f : 0.5f) * points_.weight.at(j);
-            //std::cout << __LINE__ << std::endl;
-          }
-        } // end of interate inside this bin
-
-        return;
+        }
+      } // end of interate inside this bin
+      
+      return;
     }
     //std::cout << __LINE__ << std::endl;
     //std::cout << N_ << '\n';
-    for(int i = dim_min.at(dim_min.size() - N_); i < dim_max.at(dim_max.size() - N_); ++i) {
+    for(int i = dim_min.at(dim_min.size() - N_); i <= dim_max.at(dim_max.size() - N_); ++i) {
         //std::cout << "dentro al for" << '\n';
         //std::cout << "minSize" << dim_min.size() << '\n';
         //std::cout << "maxSize" << dim_max.size() << '\n';
@@ -138,33 +130,41 @@ public:
 
   // for_recursion used for the function calculateDistanceToHigher
   void for_recursion_DistanceToHigher(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-    LayerTiles<N>& lt_, float rho_i, float delta_i, int nearestHigher_i, int point_id) {
+    LayerTiles<N>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
       if(!N_) {
-          int binId = lt_.getGlobalBinByBin(base_vector);
-          // get the size of this bin
-          int binSize = lt_[binId].size();
+        float dm = outlierDeltaFactor_ * dc_;
 
-          // iterate inside this bin
-          for (int binIter = 0; binIter < binSize; binIter++) {
-            int j = lt_[binId][binIter];
-            // query N'_{dm}(i)
-            bool foundHigher = (points_.rho[j] > rho_i);
-            // in the rare case where rho is the same, use detid
-            foundHigher = foundHigher || ((points_.rho.at(j) == rho_i) && (j > point_id) );
-            float dist_ij = distance(point_id, j);
-            if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
-              // find the nearest point within N'_{dm}(i)
-              if (dist_ij < delta_i) {
-                // update delta_i and nearestHigher_i
-                delta_i = dist_ij;
-                nearestHigher_i = j;
-              }
+        int binId = lt_.getGlobalBinByBin(base_vector);
+        // get the size of this bin
+        int binSize = lt_[binId].size();
+        
+        // iterate inside this bin
+        for (int binIter = 0; binIter < binSize; binIter++) {
+          //std::cout << __LINE__ << std::endl;
+          int j = lt_[binId][binIter]; 
+          //std::cout << "j " << j << '\n';
+          // query N'_{dm}(i)
+          bool foundHigher = (points_.rho[j] > rho_i);
+          //std::cout << "rhoJ" << points_.rho[j] << "rhoI" << rho_i << '\n'; 
+          //std::cout << "found" << foundHigher << '\n';
+          // in the rare case where rho is the same, use detid
+          foundHigher = foundHigher || ((points_.rho.at(j) == rho_i) && (j > point_id) );
+          //std::cout << "found" << foundHigher << '\n';
+          float dist_ij = distance(point_id, j);
+          //std::cout << "dist " << dist_ij << '\n';
+          if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
+            // find the nearest point within N'_{dm}(i)
+            if (dist_ij < delta_i) {
+              // update delta_i and nearestHigher_i
+              delta_i = dist_ij;
+              nearestHigher_i = j;
             }
-          } // end of interate inside this bin
+          }
+        } // end of interate inside this bin
 
-          return;
+        return;
       }
-      for(int i = dim_min.at(dim_min.size() - N_); i < dim_max.at(dim_max.size() - N_); ++i){
+      for(int i = dim_min.at(dim_min.size() - N_); i <= dim_max.at(dim_max.size() - N_); ++i){
           base_vector.at(base_vector.size() - N_) = i;
           for_recursion_DistanceToHigher(N_ - 1, base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
       }
@@ -247,7 +247,6 @@ private:
       }
       //std::cout << __LINE__ << std::endl;
       std::array<int,2*N> search_box = lt.searchBox(minMax);
-      //std::cout << __LINE__ << std::endl;
 
       // loop over bins in the search box
       std::vector<int> binVec(N);
@@ -267,10 +266,11 @@ private:
     } // end of loop over points
   };
 
-  void calculateDistanceToHigher(std::array<LayerTiles<N>, NLAYERS> & allLayerTiles ) {
+  void calculateDistanceToHigher(std::array<LayerTiles<N>, NLAYERS> & allLayerTiles) {
+    float dm = outlierDeltaFactor_ * dc_;
+    std::cout << "dm " << dm << '\n';
     // loop over all points
     for(unsigned i = 0; i < points_.n; ++i) {
-      //std::cout << i << '\n';
       // default values of delta and nearest higher for i
       float delta_i = std::numeric_limits<float>::max();
       int nearestHigher_i = -1; // if this doesn't change, the point is either a seed or an outlier
@@ -278,10 +278,10 @@ private:
 
       LayerTiles<N>& lt = allLayerTiles[points_.layer[i]];
 
-      //get search box
+      // get search box
       std::array<std::vector<float>,N> minMax;
       for(int j = 0; j != N; ++j) {
-        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*N> search_box = lt.searchBox(minMax);

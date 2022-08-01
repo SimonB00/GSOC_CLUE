@@ -146,13 +146,13 @@ int main(int argc, char *argv[]) {
   //////////////////////////////
   std::string underscore="_", suffix = ".csv";
 
-  std::string inputFileName = "/home/simone/Documents/GSOC/CLUE/clue-master/data/input/";
+  std::string inputFileName = "";
   inputFileName.append(argv[1]);
   inputFileName.append(suffix);
   std::cout << "Input file: " << inputFileName << '\n';
 
 
-  std::string outputFileName = "/home/simone/Documents/GSOC/CLUE/clue-master/data/output/";
+  std::string outputFileName = "";
   outputFileName.append(argv[1]);
   outputFileName.append(underscore);
   outputFileName.append(std::to_string(int(dc)));
