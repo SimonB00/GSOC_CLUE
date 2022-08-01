@@ -139,8 +139,7 @@ public:
 
         for (int binIter = 0; binIter < binSize; binIter++) {
           //std::cout << __LINE__ << std::endl;
-          int j = lt_[binId][binIter];
-          std::cout << "j " << j << '\n'; 
+          int j = lt_[binId][binIter]; 
           // query N'_{dm}(i)
           bool foundHigher = (points_.rho[j] > rho_i);
           //std::cout << "rhoJ" << points_.rho[j] << "rhoI" << rho_i << '\n'; 
@@ -270,6 +269,7 @@ private:
       float delta_i = std::numeric_limits<float>::max();
       int nearestHigher_i = -1; // if this doesn't change, the point is either a seed or an outlier
       float rho_i = points_.rho[i];
+      std::cout << "rhoI" << rho_i << '\n';
 
       LayerTiles<N>& lt = allLayerTiles[points_.layer[i]];
 
