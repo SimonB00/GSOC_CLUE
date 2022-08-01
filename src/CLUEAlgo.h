@@ -31,7 +31,7 @@ public:
   float outlierDeltaFactor_;
   bool verbose_;
 
-  float dm = outlierDeltaFactor_ * dc_; // separation requirement for seeds (I suppose)
+  //float dm = outlierDeltaFactor_ * dc_; // separation requirement for seeds (I suppose)
     
   Points<N> points_;
   
@@ -130,23 +130,28 @@ public:
 
   // for_recursion used for the function calculateDistanceToHigher
   void for_recursion_DistanceToHigher(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-    LayerTiles<N>& lt_, float rho_i, float delta_i, int nearestHigher_i, int point_id) {
+    LayerTiles<N>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
       if(!N_) {
+        float dm = outlierDeltaFactor_ * dc_;
+
         int binId = lt_.getGlobalBinByBin(base_vector);
         // get the size of this bin
         int binSize = lt_[binId].size();
+        
         // iterate inside this bin
-
         for (int binIter = 0; binIter < binSize; binIter++) {
           //std::cout << __LINE__ << std::endl;
           int j = lt_[binId][binIter]; 
+          //std::cout << "j " << j << '\n';
           // query N'_{dm}(i)
           bool foundHigher = (points_.rho[j] > rho_i);
           //std::cout << "rhoJ" << points_.rho[j] << "rhoI" << rho_i << '\n'; 
           //std::cout << "found" << foundHigher << '\n';
           // in the rare case where rho is the same, use detid
           foundHigher = foundHigher || ((points_.rho.at(j) == rho_i) && (j > point_id) );
+          //std::cout << "found" << foundHigher << '\n';
           float dist_ij = distance(point_id, j);
+          //std::cout << "dist " << dist_ij << '\n';
           if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
             // find the nearest point within N'_{dm}(i)
             if (dist_ij < delta_i) {
@@ -156,7 +161,7 @@ public:
             }
           }
         } // end of interate inside this bin
-        
+
         return;
       }
       for(int i = dim_min.at(dim_min.size() - N_); i <= dim_max.at(dim_max.size() - N_); ++i){
@@ -262,21 +267,21 @@ private:
   };
 
   void calculateDistanceToHigher(std::array<LayerTiles<N>, NLAYERS> & allLayerTiles) {
+    float dm = outlierDeltaFactor_ * dc_;
+    std::cout << "dm " << dm << '\n';
     // loop over all points
     for(unsigned i = 0; i < points_.n; ++i) {
-      //std::cout << i << '\n';
       // default values of delta and nearest higher for i
       float delta_i = std::numeric_limits<float>::max();
       int nearestHigher_i = -1; // if this doesn't change, the point is either a seed or an outlier
       float rho_i = points_.rho[i];
-      std::cout << "rhoI" << rho_i << '\n';
 
       LayerTiles<N>& lt = allLayerTiles[points_.layer[i]];
 
       // get search box
       std::array<std::vector<float>,N> minMax;
       for(int j = 0; j != N; ++j) {
-        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*N> search_box = lt.searchBox(minMax);
