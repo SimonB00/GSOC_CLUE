@@ -221,10 +221,14 @@ private:
     for (int i=0; i<points_.n; ++i){
       // push index of points into tiles
       std::vector<float> coords;
+      std::cout << __LINE__ << std::endl;
       for(int j = 0; j != N; ++j) {
+        std::cout << __LINE__ << std::endl;
         coords.push_back(points_.coordinates_[j][i]);
       }
+      std::cout << __LINE__ << std::endl;
       allLayerTiles[points_.layer[i]].fill(coords, i);
+      std::cout << __LINE__ << std::endl;
       //std::cout << "allLayerTilesSize " << allLayerTiles.size() << '\n';
       // so it simply takes the layer in which the hits where detected (there is only 1 layer actually, so it should be easier),
       // divides them in tiles (bins) and saves the index of the point (hit) recorded in each of them.
