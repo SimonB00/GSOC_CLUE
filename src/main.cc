@@ -88,6 +88,7 @@ void mainRun(std::string inputFileName, std::string outputFileName,
       // measure excution time of makeClusters
       auto start = std::chrono::high_resolution_clock::now();
       clueAlgo.makeClusters();
+      std::cout << "after makeClusters" << '\n';
       auto finish = std::chrono::high_resolution_clock::now();
       std::chrono::duration<double> elapsed = finish - start;
       std::cout << "Elapsed time: " << elapsed.count() *1000 << " ms\n";
@@ -167,7 +168,7 @@ int main(int argc, char *argv[]) {
   //////////////////////////////
   // MARK -- test run
   //////////////////////////////
-  mainRun<2>(inputFileName, outputFileName,
+  mainRun<3>(inputFileName, outputFileName,
           dc, rhoc, outlierDeltaFactor, 
           useGPU, totalNumberOfEvent, verbose);
 
