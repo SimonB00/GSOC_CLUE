@@ -173,37 +173,73 @@ public:
           for_recursion_DistanceToHigher(N_ - 1, base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
       }
   }
+
+  std::string getOutputString(unsigned it, std::array<std::vector<float>,N> const& coordinates, float weight,
+				float rho, float delta, int nh, int isseed, float clusterid) const {
+    std::stringstream s;
+    std::string sep = ",";
+    s << it << sep;
+    for(int i = 0; i != N; ++i) {
+      s << coordinates[i][it] << sep;
+    }
+    s << weight << sep << rho;
+    if (delta <= 999)
+      s << sep << delta;
+    else
+      s << ",999"; //convert +inf to 999 in verbose
+    s << sep << nh << sep << isseed << sep << clusterid << '\n';
+    
+    return s.str();
+  }
+
+  void createOutputFile(std::string outputFileName_) {
+	  std::string s;
+	  s = "index,";
+    for(int i = 0; i != N; ++i) {
+      s += "x" + std::to_string(i) + ",";
+    }
+    s += "weight,rho,delta,nh,isSeed,clusterId\n";
+	  
+    for(unsigned i=0; i < nVerbose; i++) {
+	    s += getOutputString(i, points_.coordinates_,
+	  			 points_.weight[i], points_.rho[i], points_.delta[i],
+	  			 points_.nearestHigher[i], points_.isSeed[i],
+	  			 points_.clusterIndex[i]);
+	  }
+
+	  std::ofstream oFile(outputFileName_);
+	  oFile << s;
+	  oFile.close();
+  }
         
 private:
   // private member methods
   void prepareDataStructures(LayerTiles<Ndim>& tiles) {
-    for (int i=0; i<points_.n; ++i){
+    for (int i=0; i < points_.n; ++i){
       // push index of points into tiles
       std::vector<float> coords;
-      for(int j = 0; j != Ndim; ++j) {
+      for(int j = 0; j != N; ++j) {
         coords.push_back(points_.coordinates_[j][i]);
       }
-      tiles[poistd::array<int,2*N> searchBox(std::array<std::vector<float>,N> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},....}
-      std::array<int, 2*N> minMaxBins;
-      int j = 0;
-      for(int i = 0; i != N; ++i) {
-        minMaxBins[j] = getBin(minMax_[i][0]);
-        minMaxBins[j+1] = getBin(minMax_[i][1]);
-        j += 2;
-      }
-      return minMaxBins;
-    }r all points
-    for(int i = 0; i < points_.n; ++i) {
+      tiles.fill(coords, i);
+      // so it simply takes the layer in which the hits where detected (there is only 1 layer actually, so it should be easier),
+      // divides them in tiles (bins) and saves the index of the point (hit) recorded in each of them.
+    }
+  };
+
+  void calculateLocalDensity(LayerTiles<N>& tiles) {
+    // loop over all points
+    for(unsigned i = 0; i < points_.n; ++i) {
       // get search box
-      std::array<std::vector<float>,Ndim> minMax;
-      for(int j = 0; j != Ndim; ++j) {
+      std::array<std::vector<float>,N> minMax;
+      for(int j = 0; j != N; ++j) {
         std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
         minMax[j] = partial_minMax;
       }
-      std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
+      std::array<int,2*N> search_box = tiles.searchBox(minMax);
 
       // loop over bins in the search box(binIter_f - binIter_i)
-      std::vector<int> binVec(Ndim);
+      std::vector<int> binVec(N);
       std::vector<int> dimMin;
       std::vector<int> dimMax;
       for(int j = 0; j != search_box.size(); ++j) {
@@ -214,9 +250,9 @@ private:
         }
       }
 
-      for_recursion(Ndim,binVec,dimMin,dimMax,tiles,i);
+      for_recursion(N,binVec,dimMin,dimMax,tiles,i);
     } // end of loop over points
-  }
+  };
 
   void calculateDistanceToHigher(LayerTiles<Ndim>& tiles) {
     float dm = outlierDeltaFactor_ * dc_;
@@ -310,7 +346,7 @@ private:
     finish = std::chrono::high_resolution_clock::now();
     elapsed = finish - start;
     std::cout << "--- assignClusters:            " << elapsed.count() *1000 << " ms\n";
-  };
+  }
 
   inline float distance(int i, int j) const {
     if(points_.layer[i] == points_.layer[j] ) {
@@ -323,7 +359,7 @@ private:
     } else {
       return std::numeric_limits<float>::max();
     }
-  };
+  }
 };
 
 #endif
