@@ -18,13 +18,6 @@ class LayerTiles {
       layerTiles_.resize(std::pow(LayerTilesConstants::nLines,N));
     }
 
-    //void fill(const std::vector<float>& x, const std::vector<float>& y) {
-    //  auto cellsSize = x.size();
-    //  for(unsigned int i = 0; i< cellsSize; ++i) {
-    //      layerTiles_[getGlobalBin(x[i],y[i])].push_back(i);
-    //  }
-    //}
-
     void fill(const std::array<std::vector<float>,N>& coordinates) {
       auto cellsSize = coordinates[0].size();
       for(unsigned int i = 0; i< cellsSize; ++i) {

@@ -8,8 +8,6 @@
 template <uint8_t N>
 struct Points {
   std::array<std::vector<float>,N> coordinates_; // this array contains all the N-dimensional coordinate vectors
-  // std::vector<float> x;
-  // std::vector<float> y;
   std::vector<int> layer;
   std::vector<float> weight;
   
