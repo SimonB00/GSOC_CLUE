@@ -2,9 +2,15 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-mean = [0, 0, 0]
-cov = [[2,0,0], [0,2,0], [0,0,2]]
-x0, x1, x2 = np.random.multivariate_normal(mean, cov, 100000).T
+mean0 = 0
+sigma0 = 50
+x0 = np.random.normal(mean0,sigma0,1000)
+mean1 = 0
+sigma1 = 60
+x1 = np.random.normal(mean1,sigma1,1000)
+mean2 = 0
+sigma2 = 80
+x2 = np.random.normal(mean2,sigma2,1000)
 
 x0 = list(x0)
 x1 = list(x1)
@@ -18,4 +24,4 @@ plt.show()
 
 open_file = open("gen.csv", 'w')
 for i in range(len(x0)):
-    open_file.write(str(i) + ',' + str(x0[i]) + ',' + str(x1[i]) + ',' + str(x2[i]) + ',0,1' + '\n')
+    open_file.write(str(round(x0[i],2)) + ',' + str(round(x1[i],2)) + ',' + str(round(x2[i],2)) + ',0.00,1.00' + '\n')

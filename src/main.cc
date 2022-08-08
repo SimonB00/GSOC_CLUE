@@ -2,7 +2,6 @@
 #include <fstream>
 #include <string>
 #include <chrono>
-//#include "/home/simone/Documents/GSOC/CLUE/clue-master/include/CLUEAlgo.h"
 #include "CLUEAlgo.h"
 
 template <uint8_t N>
@@ -15,8 +14,6 @@ void mainRun(std::string inputFileName, std::string outputFileName,
   //////////////////////////////
   std::cout << "Start to load input points" << std::endl;
 
-  //std::vector<float> x;
-  //std::vector<float> y;
   std::array<std::vector<float>,N> coordinates;
   std::vector<int> layer;
   std::vector<float> weight;
@@ -88,7 +85,6 @@ void mainRun(std::string inputFileName, std::string outputFileName,
       // measure excution time of makeClusters
       auto start = std::chrono::high_resolution_clock::now();
       clueAlgo.makeClusters();
-      std::cout << "after makeClusters" << '\n';
       auto finish = std::chrono::high_resolution_clock::now();
       std::chrono::duration<double> elapsed = finish - start;
       std::cout << "Elapsed time: " << elapsed.count() *1000 << " ms\n";

@@ -13,6 +13,9 @@ namespace LayerTilesConstants {
     return (static_cast<float>(static_cast<int32_t>(num)) == num) ? static_cast<int32_t>(num) : static_cast<int32_t>(num) + ((num > 0) ? 1 : 0);
   }
 
+  // lo devi calcolare con i punti
+  // decido quante tiles voglio (al runtime). Decidere la media dei punti per tile che si vuole avere.
+
   //constexpr float minX =  -250.f;
   //constexpr float maxX =   250.f;
   //constexpr float minY =  -250.f;
