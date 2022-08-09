@@ -20,7 +20,7 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     std::string value = "";
     // Iterate through each line and split the content using delimeter
     while (getline(iFile, value, ',')) {
-      for(int i = 0; i != N; ++i) {
+      for(int i = 0; i != Ndim; ++i) {
         coordinates[i].push_back(std::stof(value)) ;
         getline(iFile, value, ','); 
       }
@@ -32,7 +32,7 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
 
     // Running the clustering algorithm //
     std::cout << "Start to run CLUE" << '\n';
-    ClusteringAlgo<T,Ndim> algo(dc,rhoc,outlierDeltaFactor,verbose,pPBin);
+    ClusteringAlgo<T,Ndim> algo(dc,rhoc,outlierDeltaFactor,pPBin);
     algo.setPoints(coordinates[0].size(), coordinates, &weight[0]);
     
     auto start_clustering = std::chrono::high_resolution_clock::now();

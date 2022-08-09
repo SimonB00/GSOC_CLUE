@@ -13,30 +13,30 @@ public:
 
     int nTiles;
     std::array<float,Ndim> tilesSize;
+    std::array<std::vector<T>,Ndim> minMax;
 
     int getGlobalBin(std::vector<T> coords) const {
-      int globalBin = getBin(coords[0]);
-      int nTilesPerDim = std::pow(NTiles,1.0/Ndim);
-      for(int i = 1; i != N; ++i) {
-        globalBin += nTilesPerDim*getBin(coords[i]);
+      int globalBin = getBin(coords[0],0);
+      int nTilesPerDim = std::pow(nTiles,1.0/Ndim);
+      for(int i = 1; i != Ndim; ++i) {
+        globalBin += nTilesPerDim*getBin(coords[i],i);
       }
       return globalBin;
     }
 
     int getGlobalBinByBin(std::vector<int> Bins) const {
       int globalBin = Bins[0];
-      int nTilesPerDim = std::pow(NTiles,1.0/Ndim);
-      for(int i = 1; i != N; ++i) {
+      int nTilesPerDim = std::pow(nTiles,1.0/Ndim);
+      for(int i = 1; i != Ndim; ++i) {
         globalBin += nTilesPerDim*Bins[i];
       }
       return globalBin;
     }
 
-    int getBin(std::vector<T> coords_, int dim_) const {
-      constexpr float Range = LayerTilesConstants::maxCoord - LayerTilesConstants::minCoord;
-      static_assert(Range>=0.);
-      int coord_Bin = (coord_ - LayerTilesConstants::minCoord)*LayerTilesConstants::rCoord;
-      coord_Bin = std::min(coord_Bin,LayerTilesConstants::nLines-1);
+    int getBin(T coord_, int dim_) const {
+      //constexpr T Range = minMax[dim_][1] - minMax[dim_][0];
+      int coord_Bin = (coord_ - minMax[dim_][0])/tilesSize[dim_];
+      coord_Bin = std::min(coord_Bin,(int)(std::pow(nTiles,1.0/Ndim)-1));
       coord_Bin = std::max(coord_Bin,0);
       return coord_Bin;
     }
@@ -49,10 +49,10 @@ public:
       auto cellsSize = coordinates[0].size();
       for(int i = 0; i < cellsSize; ++i) {
         std::vector<T> bin_coords;
-        for(int j = 0; j != N; ++j) {
+        for(int j = 0; j != Ndim; ++j) {
           bin_coords.push_back(coordinates[j][i]);
         } 
-        layerTiles_[getGlobalBin(bin_coords)].push_back(i);
+        tiles_[getGlobalBin(bin_coords)].push_back(i);
       }
     }
 
@@ -60,8 +60,8 @@ public:
       std::array<int, 2*Ndim> minMaxBins;
       int j = 0;
       for(int i = 0; i != Ndim; ++i) {
-        minMaxBins[j] = getBin(minMax_[i][0]);
-        minMaxBins[j+1] = getBin(minMax_[i][1]);
+        minMaxBins[j] = getBin(minMax_[i][0],i);
+        minMaxBins[j+1] = getBin(minMax_[i][1],i);
         j += 2;
       }
 
