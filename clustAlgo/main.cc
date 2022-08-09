@@ -4,7 +4,6 @@
 #include <string>
 
 #include "clustering.h"
-#include "fileName.h"
 
 template <typename T, uint8_t Ndim>
 void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin, 
@@ -42,13 +41,41 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
     std::cout << "Finished running CLUE" << '\n';
+
+    algo.createOutputFile(outputFileName);
+}
+
+std::string getInputName(std::string const& inputFileName) {
+  int size = inputFileName.size();
+  std::string name;
+  
+  for(int i = 5; i < size; ++i) {
+      if(inputFileName[size-i] == '/') { break; }
+      name += inputFileName[size-i];
+  }
+  reverse(name.begin(),name.end());
+  
+  return name;
+}
+
+std::string createOutputName(std::string const& inputFileName_, std::string const& pathOutput, 
+                            std::vector<float> const& parameters) {
+    // the input name should be like pathToInput/fileName.csv
+    std::string inputName = getInputName(inputFileName_);
+    std::string outputFileName = pathOutput + inputName;
+    for(auto const& par : parameters) {
+        outputFileName += '_' + std::to_string(par);
+    }
+    outputFileName += ".csv";
+
+    return outputFileName;
 }
 
 int main(int argc, char *argv[]) {
     float dc=20, rhoc=80, outlierDeltaFactor=2;
     int pPbin = 3;
 
-    if (argc == 8) {
+    if (argc == 5) {
       dc = std::stof(argv[2]);
       rhoc = std::stof(argv[3]);
       outlierDeltaFactor = std::stof(argv[4]);
@@ -62,16 +89,17 @@ int main(int argc, char *argv[]) {
     //////////////////////////////
 
     std::string inputFileName = argv[1];
-    std::string pathToOutput;
+    std::cout << inputFileName << '\n';
+    std::string pathToOutput = "../data/output/";
     std::vector<float> parameters{dc,rhoc,outlierDeltaFactor};
 
     std::string outputFileName = createOutputName(inputFileName, pathToOutput, parameters);
-
+    std::cout << outputFileName << '\n',
     //////////////////////////////
     // MARK -- test run
     //////////////////////////////
 
-    mainRun<float,3>(dc, rhoc, outlierDeltaFactor, pPbin,
+    mainRun<float,2>(dc, rhoc, outlierDeltaFactor, pPbin,
                     inputFileName, outputFileName);
 }
 
