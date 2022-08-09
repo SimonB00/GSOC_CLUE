@@ -15,6 +15,13 @@ public:
     std::array<float,Ndim> tilesSize;
     std::array<std::vector<T>,Ndim> minMax;
 
+    int getBin(T coord_, int dim_) const {
+      int coord_Bin = (coord_ - minMax[dim_][0])/tilesSize[dim_];
+      coord_Bin = std::min(coord_Bin,(int)(std::pow(nTiles,1.0/Ndim)-1));
+      coord_Bin = std::max(coord_Bin,0);
+      return coord_Bin;
+    }
+
     int getGlobalBin(std::vector<T> coords) const {
       int globalBin = getBin(coords[0],0);
       int nTilesPerDim = std::pow(nTiles,1.0/Ndim);
@@ -31,14 +38,6 @@ public:
         globalBin += nTilesPerDim*Bins[i];
       }
       return globalBin;
-    }
-
-    int getBin(T coord_, int dim_) const {
-      //constexpr T Range = minMax[dim_][1] - minMax[dim_][0];
-      int coord_Bin = (coord_ - minMax[dim_][0])/tilesSize[dim_];
-      coord_Bin = std::min(coord_Bin,(int)(std::pow(nTiles,1.0/Ndim)-1));
-      coord_Bin = std::max(coord_Bin,0);
-      return coord_Bin;
     }
 
     void fill(std::vector<T> coords, int i) {
