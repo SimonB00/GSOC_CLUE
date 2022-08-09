@@ -19,7 +19,7 @@ struct Points {
   int n;
 
   void clear() {
-    for(int i = 0; i != Ndim ++i) {
+    for(int i = 0; i != Ndim; ++i) {
       coordinates_[i].clear();
     }
     weight.clear();

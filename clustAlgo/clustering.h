@@ -19,12 +19,11 @@
 template <typename T,uint8_t Ndim>
 class ClusteringAlgo{
 public:
-  ClusteringAlgo(float dc, float rhoc, float outlierDeltaFactor, bool verbose, int pPBin) {
+  ClusteringAlgo(float dc, float rhoc, float outlierDeltaFactor, int pPBin) {
     dc_ = dc; 
     rhoc_ = rhoc;
     outlierDeltaFactor_ = outlierDeltaFactor;
-    verbose_ = verbose;
-    pointsPerBin_ = pPBin;
+    pointsPerTile_ = pPBin;
   }
   ~ClusteringAlgo(){} 
     
@@ -32,7 +31,7 @@ public:
   float dc_;  // cut-off distance in the calculation of local density
   float rhoc_;  // minimum density to promote a point as a seed or the maximum density to demote a point as an outlier
   float outlierDeltaFactor_;
-  bool verbose_;
+  //bool verbose_;
   int pointsPerTile_;
     
   Points<T,Ndim> points_;
@@ -64,17 +63,18 @@ public:
   void clearPoints(){ points_.clear(); }
 
   int calculateNTiles(int pointPerBin) {
-    return points.n/pointPerBin;
+    return points_.n/pointPerBin;
   }
 
-  std::array<float,N> calculateTileSize(int NTiles) {
-    std::array<float,N> tileSizes;
+  std::array<float,Ndim> calculateTileSize(int NTiles, tiles<T,Ndim>& tiles_) {
+    std::array<float,Ndim> tileSizes;
     int NperDim = std::pow(NTiles,1.0/Ndim);
 
     for(int i = 0; i != Ndim; ++i) {
       float tileSize;
-      T dimMax = *std::max_element(points_.coordinates[i].begin(),points_.coordinates[i].end());
-      T dimMin = *std::min_element(points_.coordinates[i].begin(),points_.coordinates[i].end());
+      T dimMax = *std::max_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
+      T dimMin = *std::min_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
+      tiles_.minMax[i] = {dimMin,dimMax};
       tileSize = (dimMax-dimMin)/NperDim;
       
       tileSizes[i] = tileSize;
@@ -84,26 +84,26 @@ public:
   }
 
   void makeClusters() {
-    LayerTiles<Ndim> Tiles;
+    tiles<T,Ndim> Tiles;
     Tiles.nTiles = calculateNTiles(pointsPerTile_);
     Tiles.resizeTiles();
-    Tiles.tilesSize = calculateTileSize(Tiles.nTiles);
+    Tiles.tilesSize = calculateTileSize(Tiles.nTiles, Tiles);
 
     // start clustering
     auto start = std::chrono::high_resolution_clock::now();
-    prepareDataStructures(allLayerTiles);
+    prepareDataStructures(Tiles);
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
     std::cout << "--- prepareDataStructures:     " << elapsed.count() *1000 << " ms\n";
     
     start = std::chrono::high_resolution_clock::now();
-    calculateLocalDensity(allLayerTiles);
+    calculateLocalDensity(Tiles);
     finish = std::chrono::high_resolution_clock::now();
     elapsed = finish - start;
     std::cout << "--- calculateLocalDensity:     " << elapsed.count() *1000 << " ms\n";
 
     start = std::chrono::high_resolution_clock::now();
-    calculateDistanceToHigher(allLayerTiles);
+    calculateDistanceToHigher(Tiles);
     finish = std::chrono::high_resolution_clock::now();
     elapsed = finish - start;
     std::cout << "--- calculateDistanceToHigher: " << elapsed.count() *1000 << " ms\n";
@@ -112,7 +112,7 @@ public:
   };
 
   template <uint8_t N_>
-  void for_recursion(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, LayerTiles<Ndim>& lt_, int point_id) {
+  void for_recursion(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
     if(!N_) {
       int binId = lt_.getGlobalBinByBin(base_vector);
       // get the size of this bin
@@ -140,7 +140,7 @@ public:
   // for_recursion used for the function calculateDistanceToHigher
   template <uint8_t N_>
   void for_recursion_DistanceToHigher(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-    LayerTiles<Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
+    tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
       if(!N_) {
         float dm = outlierDeltaFactor_ * dc_;
 
@@ -170,16 +170,16 @@ public:
       }
       for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
           base_vector[base_vector.size() - N_] = i;
-          for_recursion_DistanceToHigher(N_ - 1, base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
+          for_recursion_DistanceToHigher<N_-1>(base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
       }
   }
 
-  std::string getOutputString(unsigned it, std::array<std::vector<float>,N> const& coordinates, float weight,
+  std::string getOutputString(unsigned it, std::array<std::vector<float>,Ndim> const& coordinates, float weight,
 				float rho, float delta, int nh, int isseed, float clusterid) const {
     std::stringstream s;
     std::string sep = ",";
     s << it << sep;
-    for(int i = 0; i != N; ++i) {
+    for(int i = 0; i != Ndim; ++i) {
       s << coordinates[i][it] << sep;
     }
     s << weight << sep << rho;
@@ -195,12 +195,12 @@ public:
   void createOutputFile(std::string outputFileName_) {
 	  std::string s;
 	  s = "index,";
-    for(int i = 0; i != N; ++i) {
+    for(int i = 0; i != Ndim; ++i) {
       s += "x" + std::to_string(i) + ",";
     }
     s += "weight,rho,delta,nh,isSeed,clusterId\n";
 	  
-    for(unsigned i=0; i < nVerbose; i++) {
+    for(unsigned i=0; i < points_.n; i++) {
 	    s += getOutputString(i, points_.coordinates_,
 	  			 points_.weight[i], points_.rho[i], points_.delta[i],
 	  			 points_.nearestHigher[i], points_.isSeed[i],
@@ -214,11 +214,11 @@ public:
         
 private:
   // private member methods
-  void prepareDataStructures(LayerTiles<Ndim>& tiles) {
+  void prepareDataStructures(tiles<T,Ndim>& tiles) {
     for (int i=0; i < points_.n; ++i){
       // push index of points into tiles
       std::vector<float> coords;
-      for(int j = 0; j != N; ++j) {
+      for(int j = 0; j != Ndim; ++j) {
         coords.push_back(points_.coordinates_[j][i]);
       }
       tiles.fill(coords, i);
@@ -227,19 +227,19 @@ private:
     }
   };
 
-  void calculateLocalDensity(LayerTiles<N>& tiles) {
+  void calculateLocalDensity(tiles<T,Ndim>& tiles) {
     // loop over all points
     for(unsigned i = 0; i < points_.n; ++i) {
       // get search box
-      std::array<std::vector<float>,N> minMax;
-      for(int j = 0; j != N; ++j) {
+      std::array<std::vector<float>,Ndim> minMax;
+      for(int j = 0; j != Ndim; ++j) {
         std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
         minMax[j] = partial_minMax;
       }
-      std::array<int,2*N> search_box = tiles.searchBox(minMax);
+      std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
 
       // loop over bins in the search box(binIter_f - binIter_i)
-      std::vector<int> binVec(N);
+      std::vector<int> binVec(Ndim);
       std::vector<int> dimMin;
       std::vector<int> dimMax;
       for(int j = 0; j != search_box.size(); ++j) {
@@ -250,11 +250,11 @@ private:
         }
       }
 
-      for_recursion(N,binVec,dimMin,dimMax,tiles,i);
+      for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
     } // end of loop over points
   };
 
-  void calculateDistanceToHigher(LayerTiles<Ndim>& tiles) {
+  void calculateDistanceToHigher(tiles<T,Ndim>& tiles) {
     float dm = outlierDeltaFactor_ * dc_;
     
     // loop over all points
@@ -284,7 +284,7 @@ private:
           dimMax.push_back(search_box[j]);
         }
       }
-      for_recursion_DistanceToHigher(Ndim,binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
+      for_recursion_DistanceToHigher<Ndim>(binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
 
       points_.delta[i] = delta_i;
       points_.nearestHigher[i] = nearestHigher_i;
@@ -349,16 +349,12 @@ private:
   }
 
   inline float distance(int i, int j) const {
-    if(points_.layer[i] == points_.layer[j] ) {
-      float qSum = 0;   // quadratic sum
-      for(int k = 0; k != Ndim; ++k) {
-        qSum += std::pow(points_.coordinates_[k][i] - points_.coordinates_[k][j],2);
-      }
-
-      return std::sqrt(qSum);
-    } else {
-      return std::numeric_limits<float>::max();
+    float qSum = 0;   // quadratic sum
+    for(int k = 0; k != Ndim; ++k) {
+      qSum += std::pow(points_.coordinates_[k][i] - points_.coordinates_[k][j],2);
     }
+    
+    return std::sqrt(qSum);
   }
 };
 

@@ -40,6 +40,7 @@ class LayerTiles {
     int getBin(float coord_) const {
       constexpr float Range = LayerTilesConstants::maxCoord - LayerTilesConstants::minCoord;
       static_assert(Range>=0.);
+      //int coord_Bin = (coord_ - LayerTilesConstants::minCoord)*LayerTilesConstants::rCoord;
       int coord_Bin = (coord_ - LayerTilesConstants::minCoord)*LayerTilesConstants::rCoord;
       coord_Bin = std::min(coord_Bin,LayerTilesConstants::nLines-1);
       coord_Bin = std::max(coord_Bin,0);
