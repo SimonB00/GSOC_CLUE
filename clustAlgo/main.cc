@@ -102,27 +102,3 @@ int main(int argc, char *argv[]) {
     mainRun<float,2>(dc, rhoc, outlierDeltaFactor, pPbin,
                     inputFileName, outputFileName);
 }
-
-/*
-std::string getInputName(std::string const& inputFileName) {
-    int pathEnd;
-    int suffixStart;
-    int size = inputFileName.size();
-
-    for(int i = 0; i < size; ++i) {
-        if(inputFileName[size - i] == '/') {
-            pathEnd = size - i;
-            break;
-        }
-        if(inputFileName[size - i] == '.') {
-            suffixStart = size - i;
-        }
-    }
-    std::string name;
-    for(int i = pathEnd+1; i < suffixStart; ++i) {
-        name += inputFileName[i];
-    }
-
-    return name;
-}
-*/
