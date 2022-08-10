@@ -137,30 +137,30 @@ public:
   //  }
   //}
 
-  void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
-    if(!N_) {
-      int binId = lt_.getGlobalBinByBin(base_vector);
-      // get the size of this bin
-      int binSize = lt_[binId].size();
-      
-      // iterate inside this bin
-      for (int binIter = 0; binIter < binSize; ++binIter) {
-        int j = lt_[binId][binIter];
-        // query N_{dc_}(i)
-        float dist_ij = distance(point_id, j);
-
-        if(dist_ij <= dc_) {
-          // sum weights within N_{dc_}(i)
-          points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
-        }
-      } // end of interate inside this bin
-      return;
-    }
-    for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
-        base_vector[base_vector.size() - N_] = i;
-        for_recursion(N_-1, base_vector, dim_min, dim_max, lt_, point_id);
-    }
-  }
+  //void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
+  //  if(!N_) {
+  //    int binId = lt_.getGlobalBinByBin(base_vector);
+  //    // get the size of this bin
+  //    int binSize = lt_[binId].size();
+  //    
+  //    // iterate inside this bin
+  //    for (int binIter = 0; binIter < binSize; ++binIter) {
+  //      int j = lt_[binId][binIter];
+  //      // query N_{dc_}(i)
+  //      float dist_ij = distance(point_id, j);
+  //
+  //      if(dist_ij <= dc_) {
+  //        // sum weights within N_{dc_}(i)
+  //        points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
+  //      }
+  //    } // end of interate inside this bin
+  //    return;
+  //  }
+  //  for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
+  //      base_vector[base_vector.size() - N_] = i;
+  //      for_recursion(N_-1, base_vector, dim_min, dim_max, lt_, point_id);
+  //  }
+  //}
 
   // for_recursion used for the function calculateDistanceToHigher
   //template <uint8_t N_>
@@ -203,7 +203,7 @@ public:
     tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
       if(!N_) {
         float dm = outlierDeltaFactor_ * dc_;
-
+  
         int binId = lt_.getGlobalBinByBin(base_vector);
         // get the size of this bin
         int binSize = lt_[binId].size();
@@ -225,7 +225,7 @@ public:
             }
           }
         } // end of interate inside this bin
-
+  
         return;
       }
       for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
@@ -287,31 +287,103 @@ private:
     }
   }
 
+  //void calculateLocalDensity(tiles<T,Ndim>& tiles) {
+  //  // loop over all points
+  //  for(unsigned i = 0; i < points_.n; ++i) {
+  //    // get search box
+  //    std::array<std::vector<float>,Ndim> minMax;
+  //    for(int j = 0; j != Ndim; ++j) {
+  //      std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+  //      minMax[j] = partial_minMax;
+  //    }
+  //    std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
+  //
+  //    // loop over bins in the search box(binIter_f - binIter_i)
+  //    std::vector<int> binVec(Ndim);
+  //    std::vector<int> dimMin;
+  //    std::vector<int> dimMax;
+  //    for(int j = 0; j != search_box.size(); ++j) {
+  //      if(j%2 == 0) {
+  //        dimMin.push_back(search_box[j]);
+  //      } else {
+  //        dimMax.push_back(search_box[j]);
+  //      }
+  //    }
+  //
+  //    //for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
+  //    for_recursion(Ndim,binVec,dimMin,dimMax,tiles,i);
+  //  } // end of loop over points
+  //}
+
   void calculateLocalDensity(tiles<T,Ndim>& tiles) {
     // loop over all points
     for(unsigned i = 0; i < points_.n; ++i) {
       // get search box
-      std::array<std::vector<float>,Ndim> minMax;
+      
+      //std::vector<std::vector<float>> minMax;
+      //for(int j = 0; j != Ndim; ++j) {
+      //  std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+      //  minMax[j] = partial_minMax;
+      //}
+      //
+      //std::vector<std::vector<int>> arr_;
+      //std::vector<int> coord;
+      //for(int j = 0; j != Ndim; ++j) {
+      //  for(int k = minMax[j][0]; k != minMax[j][1]; ++k) {
+      //    coord.push_back(k);
+      //  }
+      //  arr_.push_back(coord);
+      //  coord.clear();
+      //}
+      
+      std::vector<std::vector<int>> arr_;
+      std::vector<int> coord;
       for(int j = 0; j != Ndim; ++j) {
-        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
-        minMax[j] = partial_minMax;
-      }
-      std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
-
-      // loop over bins in the search box(binIter_f - binIter_i)
-      std::vector<int> binVec(Ndim);
-      std::vector<int> dimMin;
-      std::vector<int> dimMax;
-      for(int j = 0; j != search_box.size(); ++j) {
-        if(j%2 == 0) {
-          dimMin.push_back(search_box[j]);
-        } else {
-          dimMax.push_back(search_box[j]);
+        for(int k = points_.coordinates_[j][i]-dc_; k != points_.coordinates_[j][i]+dc_; ++k) {
+          coord.push_back(k);
         }
+        arr_.push_back(coord);
+        coord.clear();
+      }
+      
+      std::vector<std::vector<int>> combinations;
+
+      for(int j = 0; j < arr_[0].size(); ++j) {
+          combinations.push_back({arr_[0][j]});
       }
 
-      //for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
-      for_recursion(Ndim,binVec,dimMin,dimMax,tiles,i);
+      std::vector<int> vec;
+      std::vector<std::vector<int>> partial_combinations;
+      for(int j = 1; j != Ndim; ++j) {
+        for(auto& comb : combinations) {
+          for(auto& y : arr_[j]) {
+              vec = comb;
+              vec.push_back(y);
+              partial_combinations.push_back(vec);
+              vec.clear();
+          }
+        }
+        combinations = partial_combinations;
+        partial_combinations.clear();
+      }
+
+      for(auto const& bin : combinations) {
+        int binId = tiles.getGlobalBinByBin(bin);
+        // get the size of this bin
+        int binSize = tiles[binId].size();
+
+        // iterate inside this bin
+        for (int binIter = 0; binIter < binSize; ++binIter) {
+          int j = tiles[binId][binIter];
+          // query N_{dc_}(i)
+          float dist_ij = distance(i, j);
+
+          if(dist_ij <= dc_) {
+            // sum weights within N_{dc_}(i)
+            points_.rho[i] += (i == j ? 1.f : 0.5f) * points_.weight[j];
+          }
+        } // end of interate inside this bin
+      }
     } // end of loop over points
   }
 
@@ -326,7 +398,7 @@ private:
       float rho_i = points_.rho[i];
 
       // get search box
-      std::array<std::vector<float>,Ndim> minMax;
+      std::vector<std::vector<float>> minMax;
       for(int j = 0; j != Ndim; ++j) {
         std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
         minMax[j] = partial_minMax;

@@ -55,7 +55,7 @@ public:
       }
     }
 
-    std::array<int,2*Ndim> searchBox(std::array<std::vector<T>,Ndim> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},....}
+    std::array<int,2*Ndim> searchBox(std::vector<std::vector<T>> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},....}
       std::array<int, 2*Ndim> minMaxBins;
       int j = 0;
       for(int i = 0; i != Ndim; ++i) {
