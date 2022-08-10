@@ -291,9 +291,9 @@ private:
     // loop over all points
     for(unsigned i = 0; i < points_.n; ++i) {
       // get search box
-      std::array<std::vector<float>,Ndim> minMax;
+      std::array<std::vector<T>,Ndim> minMax;
       for(int j = 0; j != Ndim; ++j) {
-        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+        std::vector<T> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
@@ -326,9 +326,9 @@ private:
       float rho_i = points_.rho[i];
 
       // get search box
-      std::array<std::vector<float>,Ndim> minMax;
+      std::array<std::vector<T>,Ndim> minMax;
       for(int j = 0; j != Ndim; ++j) {
-        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
+        std::vector<T> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
