@@ -21,8 +21,9 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     while (getline(iFile, value, ',')) {
       for(int i = 0; i != Ndim; ++i) {
         coordinates[i].push_back(std::stof(value)) ;
-        getline(iFile, value, ','); 
-      }
+        if(i != Ndim-1) { getline(iFile, value, ','); }   
+        if(i == Ndim-1) { getline(iFile, value, '\n'); }
+      } 
       weight.push_back(std::stof(value));
     }
     iFile.close();
@@ -30,7 +31,7 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     std::cout << "Finished loading input points" << '\n';
 
     // Running the clustering algorithm //
-    std::cout << "Start to run CLUE" << '\n';
+    std::cout << "Run CLUE" << '\n';
     ClusteringAlgo<T,Ndim> algo(dc,rhoc,outlierDeltaFactor,pPBin);
     algo.setPoints(coordinates[0].size(), coordinates, &weight[0]);
     
