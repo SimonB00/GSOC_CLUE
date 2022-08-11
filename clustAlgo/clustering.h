@@ -338,8 +338,8 @@ private:
       
       std::vector<std::vector<int>> arr_;
       std::vector<int> coord;
-      for(int j = 0; j != Ndim; ++j) {
-        for(int k = points_.coordinates_[j][i]-dc_; k != points_.coordinates_[j][i]+dc_; ++k) {
+      for(int j = 0; j != Ndim; ++j) { 
+        for(int k = tiles.getBin(points_.coordinates_[j][i]-dc_,j); k != tiles.getBin(points_.coordinates_[j][i]+dc_,j); ++k) {
           coord.push_back(k);
         }
         arr_.push_back(coord);
@@ -347,7 +347,6 @@ private:
       }
       
       std::vector<std::vector<int>> combinations;
-
       for(int j = 0; j < arr_[0].size(); ++j) {
           combinations.push_back({arr_[0][j]});
       }
@@ -401,9 +400,9 @@ private:
       std::vector<std::vector<float>> minMax;
       for(int j = 0; j != Ndim; ++j) {
         std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
-        minMax[j] = partial_minMax;
+        minMax.push_back(partial_minMax);
       }
-      std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
+      std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);      
 
       // loop over all bins in the search box
 

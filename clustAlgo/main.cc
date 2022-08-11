@@ -21,8 +21,9 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     while (getline(iFile, value, ',')) {
       for(int i = 0; i != Ndim; ++i) {
         coordinates[i].push_back(std::stof(value)) ;
-        getline(iFile, value, ','); 
-      }
+        if(i != Ndim-1) { getline(iFile, value, ','); }   
+        if(i == Ndim-1) { getline(iFile, value, '\n'); }
+      } 
       weight.push_back(std::stof(value));
     }
     iFile.close();
