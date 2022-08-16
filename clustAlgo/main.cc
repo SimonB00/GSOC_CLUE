@@ -100,6 +100,6 @@ int main(int argc, char *argv[]) {
     // MARK -- test run
     //////////////////////////////
 
-    mainRun<float,3>(dc, rhoc, outlierDeltaFactor, pPbin,
+    mainRun<float,2>(dc, rhoc, outlierDeltaFactor, pPbin,
                     inputFileName, outputFileName);
 }
