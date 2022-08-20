@@ -41,18 +41,27 @@ public:
     }
 
     void fill(std::vector<T> coords, int i) {
-      tiles_[getGlobalBin(coords)].push_back(i);
+      std::cout << __LINE__ << std::endl;
+	  std::cout << getGlobalBin(coords) << std::endl;
+	  std::cout << i << std::endl;
+	  //tiles_[getGlobalBin(coords)].push_back(i);
+	  tiles_[0].push_back(0);
+	  std::cout << __LINE__ << std::endl;
     }
 
     void fill(std::array<std::vector<T>,Ndim> const& coordinates) {
-      auto cellsSize = coordinates[0].size();
+      std::cout << __LINE__ << std::endl;
+	  auto cellsSize = coordinates[0].size();
       for(int i = 0; i < cellsSize; ++i) {
         std::vector<T> bin_coords;
         for(int j = 0; j != Ndim; ++j) {
+		  std::cout << __LINE__ << std::endl;
           bin_coords.push_back(coordinates[j][i]);
         } 
+		std::cout << __LINE__ << std::endl;
         tiles_[getGlobalBin(bin_coords)].push_back(i);
-      }
+      	std::cout << __LINE__ << std::endl;
+	  }
     }
 
     std::array<int,2*Ndim> searchBox(std::array<std::vector<T>,Ndim> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},....}

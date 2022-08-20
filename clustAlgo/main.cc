@@ -33,7 +33,7 @@ void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin,
     // Running the clustering algorithm //
     std::cout << "Run CLUE" << '\n';
     ClusteringAlgo<T,Ndim> algo(dc,rhoc,outlierDeltaFactor,pPBin);
-    algo.setPoints(coordinates[0].size(), coordinates, &weight[0]);
+    algo.setPoints(coordinates[0].size(), coordinates, weight);
     
     auto start_clustering = std::chrono::high_resolution_clock::now();
     algo.makeClusters();
