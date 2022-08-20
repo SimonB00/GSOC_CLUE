@@ -1,6 +1,8 @@
-import CLUE
+import pyCLUE
 import pandas as pd
 import numpy as np
+
+Ndim = 2
 
 #ClusteringAlgo<T,Ndim> algo(dc,rhoc,outlierDeltaFactor,pPBin);
 #algo.setPoints(coordinates[0].size(), coordinates, &weight[0]);
@@ -16,16 +18,15 @@ import numpy as np
 #algo.createOutputFile(outputFileName);
 
 def getInputName(inputFileName):
-  size = len(inputFileName)
-  name = ''
+    size = len(inputFileName)
+    name = ''
   
-  for i in range(5,size):
-      if(inputFileName[size-i] == '/'):
-	  	break
-      name += inputFileName[size-i]
-  }
- 
-  return name[::-1]
+    for i in range(5,size):
+        if inputFileName[size-i] == '/':
+	        break
+        name += inputFileName[size-i]
+  
+    return name[::-1]
 
 def createOutputName(inputFileName_, pathOutput, parameters):
     # the input name should be like pathToInput/fileName.csv
@@ -38,14 +39,15 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "data/input/aniso_1000.csv"
-outputFileName = "data/output/FIRST_TEST.csv"
-
-Ndim = 3
+inputFileName = "../data/input/aniso_1000_nl.csv"
+pathToOutput = "../data/output/"
+parameters = [20,25,2,3]
+outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
+print(outputFileName)
 
 print('Start loading points')
 
-inputDF = pd.read_csv(inputFileName)
+inputDF = pd.read_csv(inputFileName,header=None)
 len_ = len(inputDF.values.tolist())
 
 coords = []
@@ -55,15 +57,20 @@ for i in range(Ndim):
 
 for i in range(len_):
 	for j in range(Ndim):
-		coord = 'x' + str(j)
-		coords[j].append(inputDF[coord][i])
-	weight.append(inputDF['weight'][i])
+		#coord = 'x' + str(j)
+		coords[j].append(inputDF[j][i])
+	weight.append(inputDF[len(inputDF.columns)-1][i])
+
+print(coords)
+print(weight)
+print(len(coords))
 
 print('Finished loading points')
 
 print('Start running CLUE')
-clusterer = pyCLUE.ClusteringAlgo(1,2,3,4)
+clusterer = pyCLUE.clusteringAlgo2(parameters[0],parameters[1],parameters[2],parameters[3])
+clusterer.setPoints(Ndim,coords,weight)
 clusterer.makeClusters()
-print('Finished running CLUE'))
+print('Finished running CLUE')
 
 clusterer.createOutputFile(outputFileName)

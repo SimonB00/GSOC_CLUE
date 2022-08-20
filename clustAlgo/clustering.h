@@ -36,8 +36,8 @@ public:
     
   Points<T,Ndim> points_;
   
-  bool setPoints(int n, std::array<std::vector<T>,Ndim> const& coordinates, float* weight) {
-    points_.clear();
+  bool setPoints(int n, std::array<std::vector<T>,Ndim> const& coordinates, std::vector<float> const& weight) {
+	points_.clear();
     // input variables
     for(int i = 0; i < n; ++i) {
 	    for(int j = 0; j != Ndim; ++j) {
@@ -260,7 +260,7 @@ public:
     }
     s += "weight,rho,delta,nh,isSeed,clusterId\n";
 	  
-    for(unsigned i=0; i < points_.n; i++) {
+    for(int i=0; i < points_.n; i++) {
 	    s += getOutputString(i, points_.coordinates_,
 	  			 points_.weight[i], points_.rho[i], points_.delta[i],
 	  			 points_.nearestHigher[i], points_.isSeed[i],
@@ -275,21 +275,19 @@ public:
 private:
   // private member methods
   void prepareDataStructures(tiles<T,Ndim>& tiles) {
-    for (int i=0; i < points_.n; ++i){
+	for (int i = 0; i < points_.n; ++i){
       // push index of points into tiles
-      std::vector<float> coords;
+      std::vector<T> coords;
       for(int j = 0; j != Ndim; ++j) {
         coords.push_back(points_.coordinates_[j][i]);
       }
       tiles.fill(coords, i);
-      // so it simply takes the layer in which the hits where detected (there is only 1 layer actually, so it should be easier),
-      // divides them in tiles (bins) and saves the index of the point (hit) recorded in each of them.
     }
   }
 
   void calculateLocalDensity(tiles<T,Ndim>& tiles) {
     // loop over all points
-    for(unsigned i = 0; i < points_.n; ++i) {
+    for(int i = 0; i < points_.n; ++i) {
       // get search box
       std::array<std::vector<T>,Ndim> minMax;
       for(int j = 0; j != Ndim; ++j) {
@@ -302,7 +300,7 @@ private:
       std::vector<int> binVec(Ndim);
       std::vector<int> dimMin;
       std::vector<int> dimMax;
-      for(int j = 0; j != search_box.size(); ++j) {
+      for(int j = 0; j != (int)(search_box.size()); ++j) {
         if(j%2 == 0) {
           dimMin.push_back(search_box[j]);
         } else {
