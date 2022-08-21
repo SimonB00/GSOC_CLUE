@@ -40,7 +40,7 @@ public:
 	points_.clear();
     // input variables
     for(int i = 0; i < n; ++i) {
-	    for(int j = 0; j != Ndim; ++j) {
+		for(int j = 0; j != Ndim; ++j) {
             points_.coordinates_[j].push_back(coordinates[j][i]);
         }
 	    points_.weight.push_back(weight[i]);
