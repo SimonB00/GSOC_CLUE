@@ -41,16 +41,10 @@ public:
     }
 
     void fill(std::vector<T> coords, int i) {
-      std::cout << __LINE__ << std::endl;
-	  std::cout << getGlobalBin(coords) << std::endl;
-	  std::cout << i << std::endl;
-	  //tiles_[getGlobalBin(coords)].push_back(i);
-	  tiles_[0].push_back(0);
-	  std::cout << __LINE__ << std::endl;
+	  tiles_[getGlobalBin(coords)].push_back(i);
     }
 
     void fill(std::array<std::vector<T>,Ndim> const& coordinates) {
-      std::cout << __LINE__ << std::endl;
 	  auto cellsSize = coordinates[0].size();
       for(int i = 0; i < cellsSize; ++i) {
         std::vector<T> bin_coords;
