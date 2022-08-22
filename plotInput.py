@@ -20,7 +20,7 @@ file = ''
 while fileNotFound:
 	file = input('What file do you want to plot? ')
 	
-	folder = getFolder(file)
+	folder = getFolder(file) + '*'
 	files = glob.glob(folder)
 	if file in files:
 		fileNotFound = False
