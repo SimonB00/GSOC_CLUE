@@ -2,7 +2,6 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
 #include "clustering.h"
 
 template <typename T, uint8_t Ndim>

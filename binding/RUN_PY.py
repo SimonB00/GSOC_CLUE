@@ -2,7 +2,7 @@ import pyCLUE
 import pandas as pd
 import numpy as np
 
-Ndim = 2
+Ndim = 3
 
 def getInputName(inputFileName):
     size = len(inputFileName)
@@ -26,9 +26,9 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "../data/input/aniso_1000_nl.csv"
+inputFileName = "../data/input/moon.csv"
 pathToOutput = "../data/output/"
-parameters = [20,25,2,3]
+parameters = [5,10,2,3]
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
 
 print('Start loading points')
@@ -50,7 +50,7 @@ for i in range(len_):
 print('Finished loading points')
 
 print('Start running CLUE')
-clusterer = pyCLUE.clusteringAlgo2(parameters[0],parameters[1],parameters[2],parameters[3])
+clusterer = pyCLUE.clusteringAlgo3(parameters[0],parameters[1],parameters[2],parameters[3])
 clusterer.setPoints(len(weight),coords,weight)
 clusterer.makeClusters()
 print('Finished running CLUE')
