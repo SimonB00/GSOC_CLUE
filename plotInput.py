@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import glob
 
+
 def getFolder(file):
 	reversed = file[::-1]
 	

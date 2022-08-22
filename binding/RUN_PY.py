@@ -1,6 +1,7 @@
 import pyCLUE
 import pandas as pd
 import numpy as np
+import time
 
 Ndim = 3
 
@@ -50,9 +51,14 @@ for i in range(len_):
 print('Finished loading points')
 
 print('Start running CLUE')
+start = time.time_ns()
 clusterer = pyCLUE.clusteringAlgo3(parameters[0],parameters[1],parameters[2],parameters[3])
 clusterer.setPoints(len(weight),coords,weight)
 clusterer.makeClusters()
+finish = time.time_ns()
+
+elapsed_time = (finish - start)/(10**6)
+print('Elapsed time = ' + str(elapsed_time) + ' ms')
 print('Finished running CLUE')
 
 clusterer.createOutputFile(outputFileName)
