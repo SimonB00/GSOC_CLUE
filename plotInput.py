@@ -14,6 +14,11 @@ for i in range(Ndim):
 for i in range(len_):
 	for j in range(Ndim):
 		data[j].append(df[j][i])
-
-plt.scatter(x=data[0],y=data[1],s=1)
-plt.show()
+if Ndim == 2:
+	plt.scatter(x=data[0],y=data[1],s=1)
+	plt.show()
+if Ndim == 3:
+	fig = plt.figure()
+	ax = fig.add_subplot(projection='3d')
+	ax.scatter(data[0],data[1],data[2])
+	plt.show()
