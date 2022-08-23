@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 from sklearn.datasets import make_blobs
 import sklearn.datasets as ds
 
-data, labels = ds.make_moons(n_samples=1000, shuffle=True,noise=0.05,random_state=None)
+#data, labels = ds.make_moons(n_samples=1000, shuffle=True,noise=0.05,random_state=None)
+data, labels = make(n_samples=1000,centers=4,random_state=100)
 
 fig, ax = plt.subplots()
 
