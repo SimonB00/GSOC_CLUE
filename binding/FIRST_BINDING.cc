@@ -4,7 +4,6 @@
 #include <pybind11/complex.h>
 #include <pybind11/functional.h>
 #include <pybind11/chrono.h>
-//#include "../clustAlgo/main.cc"
 
 PYBIND11_MODULE(pyCLUE, m) {
     m.doc() = "CLUE First binding attempt";
