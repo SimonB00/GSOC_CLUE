@@ -5,7 +5,7 @@
 #include<array>
 #include<stdint.h>
 
-template <typename T,uint8_t Ndim>
+template <typename T,int Ndim>
 struct Points {
   std::array<std::vector<T>,Ndim> coordinates_;
   std::vector<T> weight;

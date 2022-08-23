@@ -3,7 +3,7 @@
 
 #include <vector>
 
-template<typename T, uint8_t Ndim>
+template<typename T, int Ndim>
 class tiles{
 private:
     std::vector<std::vector<int>> tiles_;

@@ -15,7 +15,7 @@
 #include "tiles.h"
 #include "point.h"
 
-template <typename T,uint8_t Ndim>
+template <typename T,int Ndim>
 class ClusteringAlgo{
 public:
   ClusteringAlgo(float dc, float rhoc, float outlierDeltaFactor, int pPBin) {
@@ -247,7 +247,6 @@ private:
         }
       }
 
-      //for_recursion(Ndim,binVec,dimMin,dimMax,tiles,i);
       for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
     } // end of loop over points
   }
@@ -282,7 +281,6 @@ private:
           dimMax.push_back(search_box[j]);
         }
       }
-      //for_recursion_DistanceToHigher(Ndim,binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
       for_recursion_DistanceToHigher<Ndim>(binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
 
       points_.delta[i] = delta_i;

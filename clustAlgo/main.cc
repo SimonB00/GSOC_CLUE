@@ -4,7 +4,7 @@
 #include <string>
 #include "clustering.h"
 
-template <typename T, uint8_t Ndim>
+template <typename T, int Ndim>
 void mainRun(float dc, float rhoc, float outlierDeltaFactor, int pPBin, 
             std::string inputFileName, std::string outputFileName) {
     
