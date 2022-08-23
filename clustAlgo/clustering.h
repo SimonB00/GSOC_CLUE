@@ -110,133 +110,68 @@ public:
     findAndAssignClusters();
   }
 
-  //void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
-  //  if(!N_) {
-  //    int binId = lt_.getGlobalBinByBin(base_vector);
-  //    // get the size of this bin
-  //    int binSize = lt_[binId].size();
-  //    
-  //    // iterate inside this bin
-  //    for (int binIter = 0; binIter < binSize; ++binIter) {
-  //      int j = lt_[binId][binIter];
-  //      // query N_{dc_}(i)
-  //      float dist_ij = distance(point_id, j);
-  //
-  //      if(dist_ij <= dc_) {
-  //        // sum weights within N_{dc_}(i)
-  //        points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
-  //      }
-  //    } // end of interate inside this bin
-  //    return;
-  //  }
-  //  for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
-  //      base_vector[base_vector.size() - N_] = i;
-  //      for_recursion(N_-1, base_vector, dim_min, dim_max, lt_, point_id);
-  //  }
-  //}
-
   template <int N_>
   void for_recursion(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
+    if constexpr (N_ == 0) {
+      int binId = lt_.getGlobalBinByBin(base_vector);
+      // get the size of this bin
+      int binSize = lt_[binId].size();
+
+      // iterate inside this bin
+      for (int binIter = 0; binIter < binSize; ++binIter) {
+        int j = lt_[binId][binIter];
+        // query N_{dc_}(i)
+        float dist_ij = distance(point_id, j);
+
+        if(dist_ij <= dc_) {
+          // sum weights within N_{dc_}(i)
+          points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
+        }
+      } // end of interate inside this bin
+      return;
+    }
     for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
         base_vector[base_vector.size() - N_] = i;
         for_recursion<N_-1>(base_vector, dim_min, dim_max, lt_, point_id);
     }
   }
 
-  template <>
-  void for_recursion<0>(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
-    int binId = lt_.getGlobalBinByBin(base_vector);
-    // get the size of this bin
-    int binSize = lt_[binId].size();
-    
-    // iterate inside this bin
-    for (int binIter = 0; binIter < binSize; ++binIter) {
-      int j = lt_[binId][binIter];
-      // query N_{dc_}(i)
-      float dist_ij = distance(point_id, j);
-    
-      if(dist_ij <= dc_) {
-        // sum weights within N_{dc_}(i)
-        points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
-      }
-    } // end of interate inside this bin
-    return;
-  }
-
   // for_recursion used for the function calculateDistanceToHigher
   template <int N_>
   void for_recursion_DistanceToHigher(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
     tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
+      if constexpr (N_ == 0) {
+        float dm = outlierDeltaFactor_ * dc_;
+
+        int binId = lt_.getGlobalBinByBin(base_vector);
+        // get the size of this bin
+        int binSize = lt_[binId].size();
+
+        // iterate inside this bin
+        for (int binIter = 0; binIter < binSize; ++binIter) {
+          int j = lt_[binId][binIter]; 
+          // query N'_{dm}(i)
+          bool foundHigher = (points_.rho[j] > rho_i);
+          // in the rare case where rho is the same, use detid
+          foundHigher = foundHigher || ((points_.rho[j] == rho_i) && (j > point_id) );
+          float dist_ij = distance(point_id, j);
+          if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
+            // find the nearest point within N'_{dm}(i)
+            if (dist_ij < delta_i) {
+              // update delta_i and nearestHigher_i
+              delta_i = dist_ij;
+              nearestHigher_i = j;
+            }
+          }
+        } // end of interate inside this bin
+
+        return;
+      }
       for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
           base_vector[base_vector.size() - N_] = i;
           for_recursion_DistanceToHigher<N_-1>(base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
       }
   }
-
-  template <>
-  void for_recursion_DistanceToHigher<0>(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-    tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
-      float dm = outlierDeltaFactor_ * dc_;
-
-      int binId = lt_.getGlobalBinByBin(base_vector);
-      // get the size of this bin
-      int binSize = lt_[binId].size();
-      
-      // iterate inside this bin
-      for (int binIter = 0; binIter < binSize; ++binIter) {
-        int j = lt_[binId][binIter]; 
-        // query N'_{dm}(i)
-        bool foundHigher = (points_.rho[j] > rho_i);
-        // in the rare case where rho is the same, use detid
-        foundHigher = foundHigher || ((points_.rho[j] == rho_i) && (j > point_id) );
-        float dist_ij = distance(point_id, j);
-        if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
-          // find the nearest point within N'_{dm}(i)
-          if (dist_ij < delta_i) {
-            // update delta_i and nearestHigher_i
-            delta_i = dist_ij;
-            nearestHigher_i = j;
-          }
-        }
-      } // end of interate inside this bin
-
-      return;
-  }
-
-  //void for_recursion_DistanceToHigher(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-  //  tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
-  //    if(!N_) {
-  //      float dm = outlierDeltaFactor_ * dc_;
-  //
-  //      int binId = lt_.getGlobalBinByBin(base_vector);
-  //      // get the size of this bin
-  //      int binSize = lt_[binId].size();
-  //      
-  //      // iterate inside this bin
-  //      for (int binIter = 0; binIter < binSize; ++binIter) {
-  //        int j = lt_[binId][binIter]; 
-  //        // query N'_{dm}(i)
-  //        bool foundHigher = (points_.rho[j] > rho_i);
-  //        // in the rare case where rho is the same, use detid
-  //        foundHigher = foundHigher || ((points_.rho[j] == rho_i) && (j > point_id) );
-  //        float dist_ij = distance(point_id, j);
-  //        if(foundHigher && dist_ij <= dm) { // definition of N'_{dm}(i)
-  //          // find the nearest point within N'_{dm}(i)
-  //          if (dist_ij < delta_i) {
-  //            // update delta_i and nearestHigher_i
-  //            delta_i = dist_ij;
-  //            nearestHigher_i = j;
-  //          }
-  //        }
-  //      } // end of interate inside this bin
-  //
-  //      return;
-  //    }
-  //    for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
-  //        base_vector[base_vector.size() - N_] = i;
-  //        for_recursion_DistanceToHigher(N_-1, base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
-  //    }
-  //}
 
   std::string getOutputString(unsigned it, std::array<std::vector<float>,Ndim> const& coordinates, float weight,
 				float rho, float delta, int nh, int isseed, float clusterid) const {
