@@ -87,7 +87,7 @@ public:
     tiles<T,Ndim> Tiles;
     Tiles.nTiles = calculateNTiles(pointsPerTile_);
     Tiles.resizeTiles();
-    Tiles.tilesSize = calculateTileSize(Tiles.nTiles, Tiles);
+  	Tiles.tilesSize = calculateTileSize(Tiles.nTiles, Tiles);
 
     // start clustering
     auto start = std::chrono::high_resolution_clock::now();
