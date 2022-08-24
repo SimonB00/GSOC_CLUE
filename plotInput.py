@@ -38,4 +38,5 @@ if Ndim == 3:
 	fig = plt.figure()
 	ax = fig.add_subplot(projection='3d')
 	ax.scatter(df[0],df[1],df[2])
+
 	plt.show()
