@@ -5,6 +5,26 @@ import time
 
 Ndim = 3
 
+def chooseClusterer(Ndim_):
+	if Ndim_ == 2:
+		return pyCLUE.clusteringAlgo2(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 3:
+		return pyCLUE.clusteringAlgo3(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 4:
+		return pyCLUE.clusteringAlgo4(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 5:
+		return pyCLUE.clusteringAlgo5(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 6:
+		return pyCLUE.clusteringAlgo6(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 7:
+		return pyCLUE.clusteringAlgo7(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 8:
+		return pyCLUE.clusteringAlgo8(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 9:
+		return pyCLUE.clusteringAlgo9(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+	if Ndim_ == 10:
+		return pyCLUE.clusteringAlgo10(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+
 def getInputName(inputFileName):
     size = len(inputFileName)
     name = ''
@@ -46,7 +66,8 @@ print('Finished loading points')
 
 print('Start running CLUE')
 start = time.time_ns()
-clusterer = pyCLUE.clusteringAlgo3(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+#clusterer = pyCLUE.clusteringAlgo3(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
+clusterer = chooseClusterer(Ndim) 
 clusterer.setPoints(len(weight),coords,weight)
 clusterer.makeClusters()
 finish = time.time_ns()
