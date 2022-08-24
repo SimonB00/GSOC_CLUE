@@ -2,19 +2,25 @@ import pyCLUE
 import pandas as pd
 import numpy as np
 import time
+import matplotlib.pyplot as plt
 
 Ndim = 3
 
 def getInputName(inputFileName):
-    size = len(inputFileName)
-    name = ''
-  
-    for i in range(5,size):
-        if inputFileName[size-i] == '/':
-	        break
-        name += inputFileName[size-i]
-  
-    return name[::-1]
+  inputFileName = inputFileName[::-1]
+  name = ''
+
+  start = False
+  for char in inputFileName:
+    if char == '.':
+      start = True
+      continue
+    if char == '/':
+      break
+    if start:
+      name += char
+    
+  return name[::-1]
 
 def createOutputName(inputFileName_, pathOutput, parameters):
     # the input name should be like pathToInput/fileName.csv
@@ -27,17 +33,16 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "../data/input/moon.csv"
+inputFileName = "moon.csv"
 pathToOutput = "../data/output/"
-parameters = {'dc':5, 'rhoc':10, 'outlier':2, 'ppBin':3}
+parameters = {'dc':3, 'rhoc':15, 'outlier':0.3, 'ppBin':3}
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
 
 print('Start loading points')
 
 inputDF = pd.read_csv(inputFileName,header=None)
-coords = []
-weight = []
 
+coords = []
 for j in range(Ndim):
 	coords.append(list(inputDF[j]))
 weight = list(inputDF[Ndim])
@@ -78,3 +83,42 @@ print('Elapsed time = ' + str(elapsed_time) + ' ms')
 print('Finished running CLUE')
 
 clusterer.createOutputFile(outputFileName)
+
+if (Ndim == 2):
+	outputDF = pd.read_csv(outputFileName)
+	df_clindex = outputDF["clusterId"]
+	M = max(df_clindex)
+	print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
+
+	dfs = outputDF['isSeed']
+	print("Number of seeds: ", len([el for el in dfs if el == 1]))
+
+	for i in range(-1,M+1):
+		dfi = outputDF[outputDF.clusterId == i] # ith cluster
+		plt.scatter(dfi.x0, dfi.x1, s=20, marker = '.')
+
+	df_seed = outputDF[outputDF.isSeed == 1]
+	plt.scatter(df_seed.x0, df_seed.x1, s=20, marker = '*')
+
+	plt.show()
+
+if (Ndim == 3):
+	outputDF = pd.read_csv(outputFileName)
+	df_clindex = outputDF["clusterId"]
+	M = max(df_clindex)
+	print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
+
+	dfs = outputDF['isSeed']
+	print("Number of seeds: ", len([el for el in dfs if el == 1]))
+
+	fig = plt.figure()
+	ax = fig.add_subplot(projection='3d')
+	for i in range(-1,M+1):
+		dfi = outputDF[outputDF.clusterId == i] # ith cluster
+		ax.scatter(dfi.x0, dfi.x1, dfi.x2, s=20, marker = '.')
+
+	df_seed = outputDF[outputDF.isSeed == 1]
+	ax.scatter(df_seed.x0, df_seed.x1, df_seed.x2, s=20, marker = '*')
+	ax.set_zlim(-5,5)
+
+	plt.show()
