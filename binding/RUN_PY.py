@@ -33,9 +33,9 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "moon.csv"
+inputFileName = "blob_noise.csv"
 pathToOutput = "../data/output/"
-parameters = {'dc':3, 'rhoc':15, 'outlier':0.3, 'ppBin':3}
+parameters = {'dc':3, 'rhoc':15, 'outlier':0.8, 'ppBin':3}
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
 
 print('Start loading points')
