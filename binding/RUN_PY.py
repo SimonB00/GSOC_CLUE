@@ -35,7 +35,7 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
 inputFileName = "blob_noise.csv"
 pathToOutput = "../data/output/"
-parameters = {'dc':3, 'rhoc':15, 'outlier':0.8, 'ppBin':3}
+parameters = {'dc':3, 'rhoc':4000, 'outlier':0.4, 'ppBin':3}
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
 
 print('Start loading points')
@@ -93,6 +93,8 @@ if (Ndim == 2):
 	dfs = outputDF['isSeed']
 	print("Number of seeds: ", len([el for el in dfs if el == 1]))
 
+	df_outl = outputDF[outputDF.clusterId == -1]
+	ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, marker = 'X')
 	for i in range(-1,M+1):
 		dfi = outputDF[outputDF.clusterId == i] # ith cluster
 		plt.scatter(dfi.x0, dfi.x1, s=20, marker = '.')
@@ -113,7 +115,10 @@ if (Ndim == 3):
 
 	fig = plt.figure()
 	ax = fig.add_subplot(projection='3d')
-	for i in range(-1,M+1):
+
+	df_outl = outputDF[outputDF.clusterId == -1]
+	ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, color = 'grey', marker = 'x')
+	for i in range(0,M+1):
 		dfi = outputDF[outputDF.clusterId == i] # ith cluster
 		ax.scatter(dfi.x0, dfi.x1, dfi.x2, s=20, marker = '.')
 
