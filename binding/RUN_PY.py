@@ -4,8 +4,6 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-Ndim = 3
-
 def getInputName(inputFileName):
   inputFileName = inputFileName[::-1]
   name = ''
@@ -33,14 +31,15 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "blob_noise.csv"
+inputFileName = "circles.csv"
 pathToOutput = "../data/output/"
-parameters = {'dc':3, 'rhoc':4000, 'outlier':0.4, 'ppBin':3}
+parameters = {'dc':1.2, 'rhoc':40, 'outlier':0.4, 'ppBin':3}
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
 
 print('Start loading points')
 
 inputDF = pd.read_csv(inputFileName,header=None)
+Ndim = len(inputDF.columns) - 1
 
 coords = []
 for j in range(Ndim):
@@ -94,8 +93,8 @@ if (Ndim == 2):
 	print("Number of seeds: ", len([el for el in dfs if el == 1]))
 
 	df_outl = outputDF[outputDF.clusterId == -1]
-	ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, marker = 'X')
-	for i in range(-1,M+1):
+	plt.scatter(df_outl.x0, df_outl.x1, s=15, color = 'grey', marker = 'x')
+	for i in range(0,M+1):
 		dfi = outputDF[outputDF.clusterId == i] # ith cluster
 		plt.scatter(dfi.x0, dfi.x1, s=20, marker = '.')
 

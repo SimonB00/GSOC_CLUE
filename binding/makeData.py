@@ -36,8 +36,19 @@ z = np.random.normal(mean,sigma,100)
 moon_file = open('moon.csv','w')
 # create moon dataset
 for value in z:
-	moon_data, moon_labels = ds.make_moons(n_samples=nsamples,shuffle=False,noise=0.01,random_state=None)
+	moon_data, moon_labels = ds.make_moons(n_samples=150,shuffle=False,noise=0.03,random_state=None)
 
 	for i in range(len(moon_data)):
 		moon_file.write(str(moon_data[i][0]) + ',' + str(moon_data[i][1]) + ',' + str(value) + ',1\n')
 moon_file.close()
+
+sigma = 0.1
+z = np.random.normal(mean,sigma,100)
+circ_file = open('circles.csv','w')
+# create circles dataset
+for value in z:
+	circ_data, circ_labels = ds.make_circles(n_samples=nsamples,shuffle=True,noise=0.0,factor=0.5)
+
+	for i in range(len(circ_data)):
+		circ_file.write(str(circ_data[i][0]) + ',' + str(circ_data[i][1]) + ',' + str(value) + ',1\n')
+circ_file.close()
