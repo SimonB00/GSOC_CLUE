@@ -28,8 +28,8 @@ while fileNotFound:
 	else:
 		print('File not found')
 
-Ndim = int(input('Number of dimensions? '))
 df = pd.read_csv(file,header=None)
+Ndim = len(df.columns) - 1
 
 if Ndim == 2:
 	plt.scatter(x=df[0],y=df[1],s=1)
