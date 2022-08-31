@@ -49,7 +49,7 @@ class clusterer:
 
 		print('Finished loading points')
 	def runCLUE(self):
-		pyCLUE.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.inputFileName,self.outputFileName,self.Ndim)
+		clusteringAlgo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.inputFileName,self.outputFileName,self.Ndim)
 	def inputPlotter(self):
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
