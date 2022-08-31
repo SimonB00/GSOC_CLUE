@@ -44,17 +44,14 @@ public:
 	  tiles_[getGlobalBin(coords)].push_back(i);
     }
 
-    void fill(std::array<std::vector<T>,Ndim> const& coordinates) {
+    void fill(std::vector<std::vector<T>> const& coordinates) {
 	  auto cellsSize = coordinates[0].size();
       for(int i = 0; i < cellsSize; ++i) {
         std::vector<T> bin_coords;
         for(int j = 0; j != Ndim; ++j) {
-		  std::cout << __LINE__ << std::endl;
           bin_coords.push_back(coordinates[j][i]);
         } 
-		std::cout << __LINE__ << std::endl;
         tiles_[getGlobalBin(bin_coords)].push_back(i);
-      	std::cout << __LINE__ << std::endl;
 	  }
     }
 
