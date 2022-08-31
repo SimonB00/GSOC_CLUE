@@ -3,7 +3,7 @@
 #include "../clustAlgo/main.cc"
 #include <pybind11/stl.h> 
 
-PYBIND11_MODULE(pyCLUE, m) {
+PYBIND11_MODULE(clusteringAlgo, m) {
     m.doc() = "Binding for CLUE";
 
 	m.def("mainRun", &mainRun, "mainRun");
