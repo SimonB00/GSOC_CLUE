@@ -3,11 +3,11 @@ import codecs
 import os
 
 VERSION = '0.0.1'
-DESCRIPTION = ''
+DESCRIPTION = 'Python library that generalizes the original 2-dimensional CLUE algorithm developed at CERN'
 
 # Setting up
 setup(
-    name="",
+    name="pyCLUE_CERN",
     version=VERSION,
     author="Simone Balducci",
     author_email="<simone.balducci00@gmail.com>",
@@ -16,11 +16,11 @@ setup(
     install_requires=[],
     keywords=['Python', 'Clustering', 'Binding'],
     classifiers=[
-        "Development Status :: ",
-        "Intended Audience :: ",
-        "Programming Language :: ",
-        "Operating System :: ",
-        "Operating System :: ",
-        "Operating System :: ",
+        "Development Status :: Production",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3",
+        "Operating System :: Unix",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
     ]
 )
