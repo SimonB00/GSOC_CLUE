@@ -1,4 +1,4 @@
-import pyCLUE
+import clusteringAlgo
 import pandas as pd
 import numpy as np
 import time

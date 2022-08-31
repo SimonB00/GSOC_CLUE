@@ -1,7 +1,7 @@
 import pandas as pd
 import time
 import matplotlib.pyplot as plt
-import pyCLUE
+import clusteringAlgo 
 
 def getInputName(inputFileName):
 	inputFileName = inputFileName[::-1]
