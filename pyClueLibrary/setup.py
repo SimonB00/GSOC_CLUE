@@ -9,12 +9,12 @@ DESCRIPTION = ''
 setup(
     name="",
     version=VERSION,
-    author="",
-    author_email="<>",
+    author="Simone Balducci",
+    author_email="<simone.balducci00@gmail.com>",
     description=DESCRIPTION,
     packages=find_packages(),
     install_requires=[],
-    keywords=[],
+    keywords=['Python', 'Clustering', 'Binding'],
     classifiers=[
         "Development Status :: ",
         "Intended Audience :: ",
