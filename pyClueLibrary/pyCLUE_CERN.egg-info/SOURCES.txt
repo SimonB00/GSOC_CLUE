@@ -1,0 +1,9 @@
+LICENSE
+README
+setup.py
+pyCLUE/__init__.py
+pyCLUE/pyCLUE.py
+pyCLUE_CERN.egg-info/PKG-INFO
+pyCLUE_CERN.egg-info/SOURCES.txt
+pyCLUE_CERN.egg-info/dependency_links.txt
+pyCLUE_CERN.egg-info/top_level.txt
