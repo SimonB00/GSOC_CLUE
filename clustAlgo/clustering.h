@@ -36,11 +36,12 @@ public:
     
   Points<T,Ndim> points_;
   
-  bool setPoints(int n, std::array<std::vector<T>,Ndim> const& coordinates, std::vector<float> const& weight) {
-	points_.clear();
+  bool setPoints(int n, std::vector<std::vector<T>> const& coordinates, std::vector<float> const& weight) {
+	//points_.clear();
     // input variables
     for(int i = 0; i < n; ++i) {
 		for(int j = 0; j != Ndim; ++j) {
+			points_.coordinates_.push_back({});
             points_.coordinates_[j].push_back(coordinates[j][i]);
         }
 	    points_.weight.push_back(weight[i]);
@@ -234,7 +235,7 @@ public:
       }
   }
 
-  std::string getOutputString(unsigned it, std::array<std::vector<float>,Ndim> const& coordinates, float weight,
+  std::string getOutputString(unsigned it, std::vector<std::vector<float>> const& coordinates, float weight,
 				float rho, float delta, int nh, int isseed, float clusterid) const {
     std::stringstream s;
     std::string sep = ",";
@@ -246,7 +247,7 @@ public:
     if (delta <= 999)
       s << sep << delta;
     else
-      s << ",999"; //convert +inf to 999 in verbose
+      s << ",999"; 
     s << sep << nh << sep << isseed << sep << clusterid << '\n';
     
     return s.str();

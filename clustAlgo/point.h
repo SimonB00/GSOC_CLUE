@@ -2,12 +2,11 @@
 #define Points_h
 
 #include<vector>
-#include<array>
 #include<stdint.h>
 
 template <typename T,uint8_t Ndim>
 struct Points {
-  std::array<std::vector<T>,Ndim> coordinates_;
+  std::vector<std::vector<T>> coordinates_;
   std::vector<T> weight;
   
   std::vector<T> rho;

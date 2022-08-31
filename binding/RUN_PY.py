@@ -31,7 +31,7 @@ def createOutputName(inputFileName_, pathOutput, parameters):
 
     return outputFileName
 
-inputFileName = "circles.csv"
+inputFileName = "moon.csv"
 pathToOutput = "../data/output/"
 parameters = {'dc':1.2, 'rhoc':40, 'outlier':0.4, 'ppBin':3}
 outputFileName = createOutputName(inputFileName,pathToOutput,parameters)
@@ -48,40 +48,14 @@ weight = list(inputDF[Ndim])
 
 print('Finished loading points')
 
-def chooseClusterer(Ndim_):
-	if Ndim_ == 2:
-		return pyCLUE.clusteringAlgo2(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 3:
-		return pyCLUE.clusteringAlgo3(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 4:
-		return pyCLUE.clusteringAlgo4(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 5:
-		return pyCLUE.clusteringAlgo5(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 6:
-		return pyCLUE.clusteringAlgo6(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 7:
-		return pyCLUE.clusteringAlgo7(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 8:
-		return pyCLUE.clusteringAlgo8(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 9:
-		return pyCLUE.clusteringAlgo9(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-	if Ndim_ == 10:
-		return pyCLUE.clusteringAlgo10(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-
-
 print('Start running CLUE')
 start = time.time_ns()
-#clusterer = pyCLUE.clusteringAlgo3(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'])
-clusterer = chooseClusterer(Ndim) 
-clusterer.setPoints(len(weight),coords,weight)
-clusterer.makeClusters()
+pyCLUE.mainRun(parameters['dc'],parameters['rhoc'],parameters['outlier'],parameters['ppBin'],inputFileName,outputFileName, Ndim)
 finish = time.time_ns()
 
 elapsed_time = (finish - start)/(10**6)
 print('Elapsed time = ' + str(elapsed_time) + ' ms')
 print('Finished running CLUE')
-
-clusterer.createOutputFile(outputFileName)
 
 if (Ndim == 2):
 	outputDF = pd.read_csv(outputFileName)
