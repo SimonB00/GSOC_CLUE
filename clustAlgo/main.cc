@@ -205,33 +205,4 @@ void mainRun(float dc, float rhoc, float outlier, int pPBin,
 }
 
 int main(int argc, char *argv[]) {
-    float dc=20, rhoc=80, outlierDeltaFactor=2;
-    int pPbin = 3;
-
-    if (argc == 5) {
-      dc = std::stof(argv[2]);
-      rhoc = std::stof(argv[3]);
-      outlierDeltaFactor = std::stof(argv[4]);
-    } else {
-      std::cout << "bin/main [fileName] [dc] [rhoc] [outlierDeltaFactor]" << std::endl;
-      return 1;
-    }
-
-    //////////////////////////////
-    // MARK -- set input and output files
-    //////////////////////////////
-
-    std::string inputFileName = argv[1];
-    std::cout << inputFileName << '\n';
-    std::string pathToOutput = "../data/output/";
-    std::vector<float> parameters{dc,rhoc,outlierDeltaFactor};
-
-    std::string outputFileName = createOutputName(inputFileName, pathToOutput, parameters);
-    std::cout << outputFileName << '\n';
-    //////////////////////////////
-    // MARK -- test run
-    //////////////////////////////
-
-	//    mainRun(dc, rhoc, outlierDeltaFactor, pPbin,
-    //               inputFileName, outputFileName, 3);
 }
