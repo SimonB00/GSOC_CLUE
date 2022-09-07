@@ -2,6 +2,7 @@ import pandas as pd
 import time
 import matplotlib.pyplot as plt
 import clusteringAlgo 
+from varname import nameof
 
 def getInputName(inputFileName):
 	inputFileName = inputFileName[::-1]
@@ -20,16 +21,20 @@ def getInputName(inputFileName):
 	return name[::-1]
 
 class clusterer:
-	def __init__(self, inputFileName, pathOutput, dc, rhoc, outlier, pPBin): 
-		self.inputFileName = inputFileName
+	def __init__(self, inputData, pathOutput, dc, rhoc, outlier, pPBin): 
+		self.inputData = inputData
 		self.dc = dc
 		self.rhoc = rhoc
 		self.outlier = outlier
 		self.pPBin = pPBin
 
-		# the input name should be like pathToInput/fileName.csv
-		inputName = getInputName(self.inputFileName)
-		outputFileName = pathOutput + inputName
+		outputFileName = ''
+		if type(inputData) == str:
+			inputName = getInputName(self.inputData)
+			outputFileName = pathOutput + inputName
+
+		if type(inputData) == pd.DataFrame:
+			outputFileName = pathOutput
 
 		for par in [dc,rhoc,outlier,pPBin]:
 			outputFileName += '_' + str(par)
@@ -38,18 +43,29 @@ class clusterer:
 		self.outputFileName = outputFileName
 	def readData(self):
 		print('Start loading points')
+		
+		if type(self.inputData) == str:
+			df = pd.read_csv(self.inputData)
+			print(df.columns)
+			self.Ndim = len([col for col in df.columns if col[0] == 'x'])
 
-		df = pd.read_csv(self.inputFileName, header=None)
-		self.Ndim = len(df.columns) - 1 
+		if type(self.inputData) == pd.DataFrame:
+			df = self.inputData
 
 		self.coords = []
-		for j in range(self.Ndim):
-			self.coords.append(list(df[j]))
-		self.weight = list(df[self.Ndim])
+		coord_cols = [col for col in df.columns if col[0] == 'x']
+		for col in coord_cols:
+			self.coords.append(list(df[col]))
+		self.weight = list(df['weight'])
 
 		print('Finished loading points')
 	def runCLUE(self):
-		clusteringAlgo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.inputFileName,self.outputFileName,self.Ndim)
+		start = time.time_ns()
+		clusteringAlgo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.outputFileName,self.Ndim)
+		finish = time.time_ns()
+
+		elapsed_time = (finish - start)/(10**6)
+		print('CLUE run in ' + str(elapsed_time) + ' ms')
 	def inputPlotter(self):
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
