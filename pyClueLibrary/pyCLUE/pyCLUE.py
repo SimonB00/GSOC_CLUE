@@ -110,19 +110,28 @@ class clusterer:
 		dfs = df["isSeed"]
 		print("Number of seeds:", len([el for el in dfs if el == 1]))
 
-		fig = plt.figure()
-		ax = fig.add_subplot(projection='3d')
+		if self.Ndim == 2:
+			df_out = df[df.clusterId == -1] # Outliers
+			plt.scatter(df_out.x0, df_out.x1, s=5, marker='x', color='0.4')
+			for i in range(0,M+1):
+				dfi = df[df.clusterId == i] # ith cluster
+				plt.scatter(dfi.x0, dfi.x1, s=5, marker='.')
+			plt.scatter(df_seed.x0, df_seed.x1, s=20, color='r', marker='*')
+			plt.show()
+		if self.Ndim == 3:
+			fig = plt.figure()
+			ax = fig.add_subplot(projection='3d')
 
-		df_outl = df[df.clusterId == -1]
-		ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, color = 'grey', marker = 'x')
-		for i in range(0,M+1):
-			dfi = df[df.clusterId == i]
-			ax.scatter(dfi.x0, dfi.x1, dfi.x2, s=5, marker = '.')
+			df_outl = df[df.clusterId == -1]
+			ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, color = 'grey', marker = 'x')
+			for i in range(0,M+1):
+				dfi = df[df.clusterId == i]
+				ax.scatter(dfi.x0, dfi.x1, dfi.x2, s=5, marker = '.')
 
-		df_seed = df[df.isSeed == 1] # Only Seeds
-		ax.scatter(df_seed.x0, df_seed.x1, df_seed.x2, s=20, color = 'r', marker = '*')
+			df_seed = df[df.isSeed == 1] # Only Seeds
+			ax.scatter(df_seed.x0, df_seed.x1, df_seed.x2, s=20, color = 'r', marker = '*')
 
-		plt.show()
+			plt.show()
 
 print(makeBlobs(100,3))
 c = clusterer('../../binding/moon.csv','../../data/output/',1.2,40,0.4,3)
