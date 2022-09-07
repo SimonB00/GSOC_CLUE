@@ -30,160 +30,172 @@ std::string createOutputName(std::string const& inputFileName_, std::string cons
     return outputFileName;
 }
 
+void run2(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,2> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+
+	algo.createOutputFile(outputFileName);
+}
+			
+void run3(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,3> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+
+	algo.createOutputFile(outputFileName);
+}
+
+void run4(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,4> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+
+	algo.createOutputFile(outputFileName);
+}
+
+void run5(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates,	std::vector<float> const& weight) {
+	ClusteringAlgo<float,5> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+
+	algo.createOutputFile(outputFileName);
+}
+
+void run6(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,6> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+}
+
+void run7(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,7> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+}
+
+void run8(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,8> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+}
+
+void run9(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,9> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+}
+
+void run10(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
+		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
+	ClusteringAlgo<float,10> algo(dc,rhoc,outlier,pPBin);
+	algo.setPoints(coordinates[0].size(), coordinates, weight);
+
+	auto start_clustering = std::chrono::high_resolution_clock::now();
+	algo.makeClusters();
+	auto finish_clustering = std::chrono::high_resolution_clock::now();
+	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
+	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
+
+	std::cout << "Finished running CLUE" << '\n';
+}
+
 void mainRun(float dc, float rhoc, float outlier, int pPBin, 
-            std::string inputFileName, std::string outputFileName, int Ndim) {
-    
-    // Loading input points //
-    std::vector<std::vector<float>> coordinates;
-	for(int i = 0; i != Ndim; ++i) {
-		coordinates.push_back({});
-	}
-    std::vector<float> weight;
-
-    std::cout << "Starting to load input points" << '\n';
-
-    std::ifstream iFile(inputFileName);
-    std::string value = "";
-    // Iterate through each line and split the content using delimeter
-    while (getline(iFile, value, ',')) {
-      for(int i = 0; i != Ndim; ++i) {
-        coordinates[i].push_back(std::stof(value)) ;
-        if(i != Ndim-1) { getline(iFile, value, ','); }   
-        if(i == Ndim-1) { getline(iFile, value, '\n'); }
-      } 
-      weight.push_back(std::stof(value));
-    }
-    iFile.close();
-
-    std::cout << "Finished loading input points" << '\n';
+            std::vector<std::vector<float>> const& coords, std::vector<float> const& weight,
+			std::string outputFileName, int Ndim) {
 
     // Running the clustering algorithm //
     std::cout << "Run CLUE" << '\n';
    	if (Ndim == 2) {
-    	ClusteringAlgo<float,2> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run2(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 3) {
-    	ClusteringAlgo<float,3> algo(dc,rhoc,outlier,pPBin);
-		algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-		auto start_clustering = std::chrono::high_resolution_clock::now();
-		algo.makeClusters();
-		auto finish_clustering = std::chrono::high_resolution_clock::now();
-		std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-		std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-		std::cout << "Finished running CLUE" << '\n';
-
-		algo.createOutputFile(outputFileName);
+		run3(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 4) {
-    	ClusteringAlgo<float,4> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run4(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 5) {
-    	ClusteringAlgo<float,5> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run5(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 6) {
-    	ClusteringAlgo<float,6> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run6(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 7) {
-    	ClusteringAlgo<float,7> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run7(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 8) {
-    	ClusteringAlgo<float,8> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run8(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 9) {
-    	ClusteringAlgo<float,9> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run9(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
    	if (Ndim == 10) {
-    	ClusteringAlgo<float,10> algo(dc,rhoc,outlier,pPBin);
-    	algo.setPoints(coordinates[0].size(), coordinates, weight);
-
-    	auto start_clustering = std::chrono::high_resolution_clock::now();
-    	algo.makeClusters();
-    	auto finish_clustering = std::chrono::high_resolution_clock::now();
-    	std::chrono::duration<double> elapsed_clue = finish_clustering - start_clustering;
-    	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
-
-    	std::cout << "Finished running CLUE" << '\n';
-
-    	algo.createOutputFile(outputFileName);
+		run10(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
 	} 
 }
 
@@ -210,11 +222,11 @@ int main(int argc, char *argv[]) {
     std::vector<float> parameters{dc,rhoc,outlierDeltaFactor};
 
     std::string outputFileName = createOutputName(inputFileName, pathToOutput, parameters);
-    std::cout << outputFileName << '\n',
+    std::cout << outputFileName << '\n';
     //////////////////////////////
     // MARK -- test run
     //////////////////////////////
 
-    mainRun(dc, rhoc, outlierDeltaFactor, pPbin,
-                    inputFileName, outputFileName, 3);
+	//    mainRun(dc, rhoc, outlierDeltaFactor, pPbin,
+    //               inputFileName, outputFileName, 3);
 }
