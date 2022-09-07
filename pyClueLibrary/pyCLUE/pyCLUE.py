@@ -1,7 +1,9 @@
 import pandas as pd
+import numpy as np
 import time
 import matplotlib.pyplot as plt
 import clusteringAlgo 
+from sklearn.datasets import make_blobs
 from varname import nameof
 
 def getInputName(inputFileName):
@@ -19,6 +21,28 @@ def getInputName(inputFileName):
 			name += char
 	
 	return name[::-1]
+def makeBlobs(nSamples, Ndim):
+	if Ndim == 2:
+		data = {'x0': [], 'x1': [], 'weight': []}
+		blob_data, blob_labels = make_blobs(n_samples=nSamples)
+		for i in range(nSamples):
+			data['x0'] += [blob_data[i][0]]
+			data['x1'] += [blob_data[i][1]]
+			data['weight'] += [1]
+
+		return pd.DataFrame(data)
+	if Ndim == 3:
+		data = {'x0': [], 'x1': [], 'x2': [], 'weight': []}
+		z = np.random.normal(0,0.5,100)
+		for value in z:
+			blob_data, blob_labels = make_blobs(n_samples=nSamples)
+			for i in range(nSamples):
+				data['x0'] += [blob_data[i][0]]
+				data['x1'] += [blob_data[i][1]]
+				data['x2'] += [value]
+				data['weight'] += [1]
+
+		return pd.DataFrame(data)
 
 class clusterer:
 	def __init__(self, inputData, pathOutput, dc, rhoc, outlier, pPBin): 
@@ -100,6 +124,7 @@ class clusterer:
 
 		plt.show()
 
+print(makeBlobs(100,3))
 c = clusterer('../../binding/moon.csv','../../data/output/',1.2,40,0.4,3)
 c.readData()
 c.inputPlotter()
