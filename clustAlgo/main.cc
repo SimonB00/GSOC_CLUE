@@ -106,6 +106,7 @@ void run6(float dc, float rhoc, float outlier, int pPBin, std::string outputFile
 	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
 	std::cout << "Finished running CLUE" << '\n';
+	algo.createOutputFile(outputFileName);
 }
 
 void run7(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
@@ -120,6 +121,7 @@ void run7(float dc, float rhoc, float outlier, int pPBin, std::string outputFile
 	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
 	std::cout << "Finished running CLUE" << '\n';
+	algo.createOutputFile(outputFileName);
 }
 
 void run8(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
@@ -134,6 +136,7 @@ void run8(float dc, float rhoc, float outlier, int pPBin, std::string outputFile
 	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
 	std::cout << "Finished running CLUE" << '\n';
+	algo.createOutputFile(outputFileName);
 }
 
 void run9(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
@@ -148,6 +151,7 @@ void run9(float dc, float rhoc, float outlier, int pPBin, std::string outputFile
 	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
 	std::cout << "Finished running CLUE" << '\n';
+	algo.createOutputFile(outputFileName);
 }
 
 void run10(float dc, float rhoc, float outlier, int pPBin, std::string outputFileName, 
@@ -162,6 +166,7 @@ void run10(float dc, float rhoc, float outlier, int pPBin, std::string outputFil
 	std::cout << "CLUE executed in: " << elapsed_clue.count() *1000 << " ms\n";
 
 	std::cout << "Finished running CLUE" << '\n';
+	algo.createOutputFile(outputFileName);
 }
 
 void mainRun(float dc, float rhoc, float outlier, int pPBin, 
