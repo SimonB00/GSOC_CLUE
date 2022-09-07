@@ -21,7 +21,7 @@ def getInputName(inputFileName):
 			name += char
 	
 	return name[::-1]
-def makeBlobs(nSamples, Ndim):
+def makeBlobs(nSamples, Ndim, mean=0, dev=0.5):
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
 		blob_data, blob_labels = make_blobs(n_samples=nSamples)
@@ -33,7 +33,7 @@ def makeBlobs(nSamples, Ndim):
 		return pd.DataFrame(data)
 	if Ndim == 3:
 		data = {'x0': [], 'x1': [], 'x2': [], 'weight': []}
-		z = np.random.normal(0,0.5,100)
+		z = np.random.normal(mean,dev,100)
 		for value in z:
 			blob_data, blob_labels = make_blobs(n_samples=nSamples)
 			for i in range(nSamples):
