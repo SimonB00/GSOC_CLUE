@@ -11,7 +11,6 @@ mean = 0
 sigma = 0.5
 z = np.random.normal(mean,sigma,100)
 
-
 blob_file = open('blob_noise.csv','w')
 # create blob dataset
 centers = [[-10,-5],[2,4],[-10,5],[5,-7.5]]

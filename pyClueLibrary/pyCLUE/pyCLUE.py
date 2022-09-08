@@ -7,21 +7,6 @@ import subprocess as sub
 from sklearn.datasets import make_blobs
 from varname import nameof
 
-def getInputName(inputFileName):
-	inputFileName = inputFileName[::-1]
-	name = ''
-
-	start = False
-	for char in inputFileName:
-		if char == '.':
-			start = True
-			continue
-		if char == '/':
-			break
-		if start:
-			name += char
-	
-	return name[::-1]
 def makeBlobs(nSamples, Ndim, mean=0, dev=0.5):
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
@@ -59,12 +44,14 @@ class clusterer:
 			self.coords = [coord for coord in self.inputData[:-1]]
 			self.weight = self.inputData[-1] 
 			self.Ndim = len(self.inputData[:-1])
+			self.Npoints = len(self.weight)
 
 		# lists
 		if type(self.inputData) == list:
 			self.coords = [coord for coord in self.inputData[:-1]]
 			self.weight = self.inputData[-1]
 			self.Ndim = len(self.inputData[:-1])
+			self.Npoints = len(self.weight)
 
 		# path to .csv file or pandas dataframe
 		if type(self.inputData) == str or type(self.inputData) == pd.DataFrame:
@@ -79,6 +66,7 @@ class clusterer:
 			for col in coordinate_columns:
 				self.coords.append(list(df[col]))
 			self.weight = list(df['weight'])
+			self.Npoints = len(self.weight)
 
 		print('Finished loading points')
 	def runCLUE(self):
@@ -100,16 +88,16 @@ class clusterer:
 
 			plt.show()
 	def clusterPlotter(self):
-		df = pd.read_csv() 
-
-		df_clindex = df["clusterId"]
-		M = max(df_clindex) 
-		print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
-
-		dfs = df["isSeed"]
-		print("Number of seeds:", len([el for el in dfs if el == 1]))
-
 		if self.Ndim == 2:
+			data = {'x0':self.coords[0], 'x1':self.coords[1], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
+			df = pd.DataFrame(data)
+
+			df_clindex = df["clusterId"]
+			M = max(df_clindex) 
+			print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
+			dfs = df["isSeed"]
+			print("Number of seeds:", len([el for el in dfs if el == 1]))
+
 			df_out = df[df.clusterId == -1] # Outliers
 			plt.scatter(df_out.x0, df_out.x1, s=5, marker='x', color='0.4')
 			for i in range(0,M+1):
@@ -118,11 +106,19 @@ class clusterer:
 			plt.scatter(df_seed.x0, df_seed.x1, s=20, color='r', marker='*')
 			plt.show()
 		if self.Ndim == 3:
+			data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
+			df = pd.DataFrame(data)
+
+			df_clindex = df["clusterId"]
+			M = max(df_clindex) 
+			print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
+			dfs = df["isSeed"]
+			print("Number of seeds:", len([el for el in dfs if el == 1]))
 			fig = plt.figure()
 			ax = fig.add_subplot(projection='3d')
 
-			df_outl = df[df.clusterId == -1]
-			ax.scatter(df_outl.x0, df_outl.x1, df_outl.x2, s=15, color = 'grey', marker = 'x')
+			df_out = df[df.clusterId == -1]
+			ax.scatter(df_out.x0, df_out.x1, df_out.x2, s=15, color = 'grey', marker = 'x')
 			for i in range(0,M+1):
 				dfi = df[df.clusterId == i]
 				ax.scatter(dfi.x0, dfi.x1, dfi.x2, s=5, marker = '.')
@@ -131,7 +127,12 @@ class clusterer:
 			ax.scatter(df_seed.x0, df_seed.x1, df_seed.x2, s=20, color = 'r', marker = '*')
 
 			plt.show()
-
+	def createOutputFile(self,outputFolder,fileName):
+		open_file = open(outputFolder + fileName + '.csv', 'w')
+		for i in range(self.Npoints):
+			open_file.write(str(self.coords[0][i]) + ',' + str(self.coords[0][i])) + ',' +  str(self.coords[0][i])) + ',' + str(self.clusterId[i]) + ',' + str(self.isSeed[i]) + '\n')	
+		open_file.close()
+			
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
 c.inputPlotter()
