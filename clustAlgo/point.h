@@ -4,13 +4,13 @@
 #include<vector>
 #include<stdint.h>
 
-template <typename T,uint8_t Ndim>
+template <uint8_t Ndim>
 struct Points {
-  std::vector<std::vector<T>> coordinates_;
-  std::vector<T> weight;
+  std::vector<std::vector<float>> coordinates_;
+  std::vector<float> weight;
   
-  std::vector<T> rho;
-  std::vector<T> delta;
+  std::vector<float> rho;
+  std::vector<float> delta;
   std::vector<int> nearestHigher;
   std::vector<int> clusterIndex;
   std::vector<std::vector<int>> followers;
