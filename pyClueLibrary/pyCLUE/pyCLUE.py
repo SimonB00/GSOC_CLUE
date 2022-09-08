@@ -40,25 +40,25 @@ class clusterer:
 		print('Start loading points')
 		
 		# numpy array
-		if type(self.inputData) == np.array:
+		if type(inputData) == np.array:
 			self.coords = [coord for coord in self.inputData[:-1]]
 			self.weight = self.inputData[-1] 
 			self.Ndim = len(self.inputData[:-1])
 			self.Npoints = len(self.weight)
 
 		# lists
-		if type(self.inputData) == list:
+		if type(inputData) == list:
 			self.coords = [coord for coord in self.inputData[:-1]]
 			self.weight = self.inputData[-1]
 			self.Ndim = len(self.inputData[:-1])
 			self.Npoints = len(self.weight)
 
 		# path to .csv file or pandas dataframe
-		if type(self.inputData) == str or type(self.inputData) == pd.DataFrame:
-			if type(self.inputData) == str:
-				df = pd.read_csv(self.inputData)
-			if type(self.inputData) == pd.DataFrame:
-				df = self.inputData
+		if type(inputData) == str or type(inputData) == pd.DataFrame:
+			if type(inputData) == str:
+				df = pd.read_csv(inputData)
+			if type(inputData) == pd.DataFrame:
+				df = inputData
 
 			coordinate_columns = [col for col in df.columns if col[0] == 'x']
 			self.Ndim = len(coordinate_columns)
@@ -71,8 +71,9 @@ class clusterer:
 		print('Finished loading points')
 	def runCLUE(self):
 		start = time.time_ns()
-		self.clusterId = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)[0]
-		self.isSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)[1]
+		clusterIdIsSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)
+		self.clusterId = clusterIdIsSeed[0]
+		self.isSeed = clusterIdIsSeed[1]
 		finish = time.time_ns()
 
 		elapsed_time = (finish - start)/(10**6)
@@ -130,7 +131,7 @@ class clusterer:
 	def createOutputFile(self,outputFolder,fileName):
 		open_file = open(outputFolder + fileName + '.csv', 'w')
 		for i in range(self.Npoints):
-			open_file.write(str(self.coords[0][i]) + ',' + str(self.coords[0][i])) + ',' +  str(self.coords[0][i])) + ',' + str(self.clusterId[i]) + ',' + str(self.isSeed[i]) + '\n')	
+			open_file.write(str(self.coords[0][i]) + ',' + str(self.coords[0][i]) + ',' +  str(self.coords[0][i]) + ',' + str(self.clusterId[i]) + ',' + str(self.isSeed[i]) + '\n')	
 		open_file.close()
 			
 c = clusterer(1.2,40,0.4,3)

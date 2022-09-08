@@ -80,31 +80,31 @@ std::vector<std::vector<int>> mainRun(float dc, float rhoc, float outlier, int p
             std::vector<std::vector<float>> const& coords, std::vector<float> const& weight, int Ndim) {
     // Running the clustering algorithm //
    	if (Ndim == 2) {
-		return run2(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run2(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 3) {
-		return run3(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run3(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 4) {
-		return run4(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run4(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 5) {
-		return run5(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
-	} 
+		return run5(dc,rhoc,outlier,pPBin,coords,weight);
+	}
    	if (Ndim == 6) {
-		return run6(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run6(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 7) {
-		return run7(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run7(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 8) {
-		return run8(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run8(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 9) {
-		return run9(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run9(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
    	if (Ndim == 10) {
-		return run10(dc,rhoc,outlier,pPBin,outputFileName,coords,weight);
+		return run10(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
 }
 
