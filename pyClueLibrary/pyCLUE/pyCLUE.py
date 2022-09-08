@@ -3,6 +3,7 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 import clusteringAlgo 
+import subprocess as sub
 from sklearn.datasets import make_blobs
 from varname import nameof
 
@@ -68,19 +69,31 @@ class clusterer:
 	def readData(self):
 		print('Start loading points')
 		
-		if type(self.inputData) == str:
-			df = pd.read_csv(self.inputData)
-			print(df.columns)
-			self.Ndim = len([col for col in df.columns if col[0] == 'x'])
+		# numpy array
+		if type(self.inputData) == np.array:
+			self.coords = [coord for coord in self.inputData[:-1]]
+			self.weight = self.inputData[-1] 
+			self.Ndim = len(self.inputData[:-1])
 
-		if type(self.inputData) == pd.DataFrame:
-			df = self.inputData
+		# lists
+		if type(self.inputData) == list:
+			self.coords = [coord for coord in self.inputData[:-1]]
+			self.weight = self.inputData[-1]
+			self.Ndim = len(self.inputData[:-1])
 
-		self.coords = []
-		coord_cols = [col for col in df.columns if col[0] == 'x']
-		for col in coord_cols:
-			self.coords.append(list(df[col]))
-		self.weight = list(df['weight'])
+		# path to .csv file or pandas dataframe
+		if type(self.inputData) == str or type(self.inputData) == pd.DataFrame:
+			if type(self.inputData) == str:
+				df = pd.read_csv(self.inputData)
+			if type(self.inputData) == pd.DataFrame:
+				df = self.inputData
+
+			coordinate_columns = [col for col in df.columns if col[0] == 'x']
+			self.Ndim = len(coordinate_columns)
+			self.coords = []
+			for col in coordinate_columns:
+				self.coords.append(list(df[col]))
+			self.weight = list(df['weight'])
 
 		print('Finished loading points')
 	def runCLUE(self):
@@ -133,7 +146,6 @@ class clusterer:
 
 			plt.show()
 
-print(makeBlobs(100,3))
 c = clusterer('../../binding/moon.csv','../../data/output/',1.2,40,0.4,3)
 c.readData()
 c.inputPlotter()
