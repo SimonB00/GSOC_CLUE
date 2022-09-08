@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import time
 import matplotlib.pyplot as plt
-import clusteringAlgo 
+import clusteringAlgo as Algo 
 import subprocess as sub
 from sklearn.datasets import make_blobs
 from varname import nameof
@@ -46,27 +46,12 @@ def makeBlobs(nSamples, Ndim, mean=0, dev=0.5):
 		return pd.DataFrame(data)
 
 class clusterer:
-	def __init__(self, inputData, pathOutput, dc, rhoc, outlier, pPBin): 
-		self.inputData = inputData
+	def __init__(self, dc, rhoc, outlier, pPBin): 
 		self.dc = dc
 		self.rhoc = rhoc
 		self.outlier = outlier
 		self.pPBin = pPBin
-
-		outputFileName = ''
-		if type(inputData) == str:
-			inputName = getInputName(self.inputData)
-			outputFileName = pathOutput + inputName
-
-		if type(inputData) == pd.DataFrame:
-			outputFileName = pathOutput
-
-		for par in [dc,rhoc,outlier,pPBin]:
-			outputFileName += '_' + str(par)
-		outputFileName += '.csv'
-	
-		self.outputFileName = outputFileName
-	def readData(self):
+	def readData(self, inputData):
 		print('Start loading points')
 		
 		# numpy array
@@ -98,7 +83,8 @@ class clusterer:
 		print('Finished loading points')
 	def runCLUE(self):
 		start = time.time_ns()
-		clusteringAlgo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.outputFileName,self.Ndim)
+		self.clusterId = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)[0]
+		self.isSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)[1]
 		finish = time.time_ns()
 
 		elapsed_time = (finish - start)/(10**6)
@@ -114,7 +100,7 @@ class clusterer:
 
 			plt.show()
 	def clusterPlotter(self):
-		df = pd.read_csv(self.outputFileName) 
+		df = pd.read_csv() 
 
 		df_clindex = df["clusterId"]
 		M = max(df_clindex) 
@@ -146,8 +132,8 @@ class clusterer:
 
 			plt.show()
 
-c = clusterer('../../binding/moon.csv','../../data/output/',1.2,40,0.4,3)
-c.readData()
+c = clusterer(1.2,40,0.4,3)
+c.readData('../../binding/moon.csv')
 c.inputPlotter()
 c.runCLUE()
 c.clusterPlotter()
