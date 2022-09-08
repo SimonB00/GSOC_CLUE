@@ -3,7 +3,7 @@
 
 #include <vector>
 
-template<typename T, uint8_t Ndim>
+template<uint8_t Ndim>
 class tiles{
 private:
     std::vector<std::vector<int>> tiles_;
@@ -13,16 +13,16 @@ public:
 
     int nTiles;
     std::array<float,Ndim> tilesSize;
-    std::array<std::vector<T>,Ndim> minMax;
+    std::array<std::vector<float>,Ndim> minMax;
 
-    int getBin(T coord_, int dim_) const {
+    int getBin(float coord_, int dim_) const {
       int coord_Bin = (coord_ - minMax[dim_][0])/tilesSize[dim_];
       coord_Bin = std::min(coord_Bin,(int)(std::pow(nTiles,1.0/Ndim)-1));
       coord_Bin = std::max(coord_Bin,0);
       return coord_Bin;
     }
 
-    int getGlobalBin(std::vector<T> coords) const {
+    int getGlobalBin(std::vector<float> coords) const {
       int globalBin = getBin(coords[0],0);
       int nTilesPerDim = std::pow(nTiles,1.0/Ndim);
       for(int i = 1; i != Ndim; ++i) {
@@ -40,14 +40,14 @@ public:
       return globalBin;
     }
 
-    void fill(std::vector<T> coords, int i) {
+    void fill(std::vector<float> coords, int i) {
 	  tiles_[getGlobalBin(coords)].push_back(i);
     }
 
-    void fill(std::vector<std::vector<T>> const& coordinates) {
+    void fill(std::vector<std::vector<float>> const& coordinates) {
 	  auto cellsSize = coordinates[0].size();
       for(int i = 0; i < cellsSize; ++i) {
-        std::vector<T> bin_coords;
+        std::vector<float> bin_coords;
         for(int j = 0; j != Ndim; ++j) {
           bin_coords.push_back(coordinates[j][i]);
         } 
@@ -55,7 +55,7 @@ public:
 	  }
     }
 
-    std::array<int,2*Ndim> searchBox(std::array<std::vector<T>,Ndim> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},....}
+    std::array<int,2*Ndim> searchBox(std::array<std::vector<float>,Ndim> minMax_){   // {{minX,maxX},{minY,maxY},{minZ,maxZ},...}
       std::array<int, 2*Ndim> minMaxBins;
       int j = 0;
       for(int i = 0; i != Ndim; ++i) {

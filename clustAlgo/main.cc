@@ -6,7 +6,7 @@
 
 std::vector<std::vector<int>> run2(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,2> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<2> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -14,7 +14,7 @@ std::vector<std::vector<int>> run2(float dc, float rhoc, float outlier, int pPBi
 			
 std::vector<std::vector<int>> run3(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,3> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<3> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -22,7 +22,7 @@ std::vector<std::vector<int>> run3(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run4(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,4> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<4> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -30,7 +30,7 @@ std::vector<std::vector<int>> run4(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run5(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates,	std::vector<float> const& weight) {
-	ClusteringAlgo<float,5> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<5> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -38,7 +38,7 @@ std::vector<std::vector<int>> run5(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run6(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,6> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<6> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -46,7 +46,7 @@ std::vector<std::vector<int>> run6(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run7(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,7> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<7> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -54,7 +54,7 @@ std::vector<std::vector<int>> run7(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run8(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,8> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<8> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -62,7 +62,7 @@ std::vector<std::vector<int>> run8(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run9(float dc, float rhoc, float outlier, int pPBin,  
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,9> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<9> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();
@@ -70,7 +70,7 @@ std::vector<std::vector<int>> run9(float dc, float rhoc, float outlier, int pPBi
 
 std::vector<std::vector<int>> run10(float dc, float rhoc, float outlier, int pPBin, 
 		std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
-	ClusteringAlgo<float,10> algo(dc,rhoc,outlier,pPBin);
+	ClusteringAlgo<10> algo(dc,rhoc,outlier,pPBin);
 	algo.setPoints(coordinates[0].size(), coordinates, weight);
 
 	return algo.makeClusters();

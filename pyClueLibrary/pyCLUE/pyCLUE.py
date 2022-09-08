@@ -104,6 +104,7 @@ class clusterer:
 			for i in range(0,M+1):
 				dfi = df[df.clusterId == i] # ith cluster
 				plt.scatter(dfi.x0, dfi.x1, s=5, marker='.')
+			df_seed = df[df.isSeed == 1] # Only Seeds
 			plt.scatter(df_seed.x0, df_seed.x1, s=20, color='r', marker='*')
 			plt.show()
 		if self.Ndim == 3:

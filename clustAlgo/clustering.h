@@ -16,7 +16,7 @@
 #include "tiles.h"
 #include "point.h"
 
-template <typename T,uint8_t Ndim>
+template <uint8_t Ndim>
 class ClusteringAlgo{
 public:
   ClusteringAlgo(float dc, float rhoc, float outlierDeltaFactor, int pPBin) {
@@ -33,9 +33,9 @@ public:
   float outlierDeltaFactor_;
   int pointsPerTile_; // average number of points found in a tile
     
-  Points<T,Ndim> points_;
+  Points<Ndim> points_;
   
-  bool setPoints(int n, std::vector<std::vector<T>> const& coordinates, std::vector<float> const& weight) {
+  bool setPoints(int n, std::vector<std::vector<float>> const& coordinates, std::vector<float> const& weight) {
 	//points_.clear();
     // input variables
     for(int i = 0; i < n; ++i) {
@@ -66,14 +66,14 @@ public:
     return points_.n/pointPerBin;
   }
 
-  std::array<float,Ndim> calculateTileSize(int NTiles, tiles<T,Ndim>& tiles_) {
+  std::array<float,Ndim> calculateTileSize(int NTiles, tiles<Ndim>& tiles_) {
     std::array<float,Ndim> tileSizes;
     int NperDim = std::pow(NTiles,1.0/Ndim);
 
     for(int i = 0; i != Ndim; ++i) {
       float tileSize;
-      T dimMax = *std::max_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
-      T dimMin = *std::min_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
+      float dimMax = *std::max_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
+      float dimMin = *std::min_element(points_.coordinates_[i].begin(),points_.coordinates_[i].end());
       tiles_.minMax[i] = {dimMin,dimMax};
       tileSize = (dimMax-dimMin)/NperDim;
       
@@ -84,7 +84,7 @@ public:
   }
 
   std::vector<std::vector<int>> makeClusters() {
-	tiles<T,Ndim> Tiles;
+	tiles<Ndim> Tiles;
     Tiles.nTiles = calculateNTiles(pointsPerTile_);
     Tiles.resizeTiles();
   	Tiles.tilesSize = calculateTileSize(Tiles.nTiles, Tiles);
@@ -113,7 +113,7 @@ public:
 	return {points_.clusterIndex,points_.isSeed};
   }
 
-  void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<T,Ndim>& lt_, int point_id) {
+  void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<Ndim>& lt_, int point_id) {
     if(!N_) {
       int binId = lt_.getGlobalBinByBin(base_vector);
       // get the size of this bin
@@ -139,7 +139,7 @@ public:
   }
 
   void for_recursion_DistanceToHigher(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
-    tiles<T,Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
+    tiles<Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
       if(!N_) {
         float dm = outlierDeltaFactor_ * dc_;
 
@@ -175,10 +175,10 @@ public:
 
 private:
   // private member methods
-  void prepareDataStructures(tiles<T,Ndim>& tiles) {
+  void prepareDataStructures(tiles<Ndim>& tiles) {
 	for (int i = 0; i < points_.n; ++i){
       // push index of points into tiles
-      std::vector<T> coords;
+      std::vector<float> coords;
       for(int j = 0; j != Ndim; ++j) {
         coords.push_back(points_.coordinates_[j][i]);
       }
@@ -186,13 +186,13 @@ private:
     }
   }
 
-  void calculateLocalDensity(tiles<T,Ndim>& tiles) {
+  void calculateLocalDensity(tiles<Ndim>& tiles) {
     // loop over all points
     for(int i = 0; i < points_.n; ++i) {
       // get search box
-      std::array<std::vector<T>,Ndim> minMax;
+      std::array<std::vector<float>,Ndim> minMax;
       for(int j = 0; j != Ndim; ++j) {
-        std::vector<T> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
+        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dc_,points_.coordinates_[j][i]+dc_};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
@@ -214,7 +214,7 @@ private:
     } // end of loop over points
   }
 
-  void calculateDistanceToHigher(tiles<T,Ndim>& tiles) {
+  void calculateDistanceToHigher(tiles<Ndim>& tiles) {
     float dm = outlierDeltaFactor_ * dc_;
     
     // loop over all points
@@ -225,9 +225,9 @@ private:
       float rho_i = points_.rho[i];
 
       // get search box
-      std::array<std::vector<T>,Ndim> minMax;
+      std::array<std::vector<float>,Ndim> minMax;
       for(int j = 0; j != Ndim; ++j) {
-        std::vector<T> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
+        std::vector<float> partial_minMax{points_.coordinates_[j][i]-dm,points_.coordinates_[j][i]+dm};
         minMax[j] = partial_minMax;
       }
       std::array<int,2*Ndim> search_box = tiles.searchBox(minMax);
