@@ -72,9 +72,9 @@ class clusterer:
 	def runCLUE(self):
 		start = time.time_ns()
 		clusterIdIsSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)
+		finish = time.time_ns()
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
-		finish = time.time_ns()
 
 		elapsed_time = (finish - start)/(10**6)
 		print('CLUE run in ' + str(elapsed_time) + ' ms')
@@ -130,11 +130,10 @@ class clusterer:
 
 			plt.show()
 	def createOutputFile(self,outputFolder,fileName):
-		open_file = open(outputFolder + fileName + '.csv', 'w')
-		for i in range(self.Npoints):
-			open_file.write(str(self.coords[0][i]) + ',' + str(self.coords[0][i]) + ',' +  str(self.coords[0][i]) + ',' + str(self.clusterId[i]) + ',' + str(self.isSeed[i]) + '\n')	
-		open_file.close()
-			
+		outPath = outputFolder + fileName
+		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
+		df = pd.DataFrame(data)
+		df.to_csv(outPath,index=False)
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
 c.inputPlotter()
