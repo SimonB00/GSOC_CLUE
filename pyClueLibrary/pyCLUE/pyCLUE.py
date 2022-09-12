@@ -4,9 +4,7 @@ import random as rnd
 import time
 import matplotlib.pyplot as plt
 import clusteringAlgo as Algo 
-import subprocess as sub
 from sklearn.datasets import make_blobs
-from varname import nameof
 
 def sign():
 	sign = rnd.random()
@@ -14,6 +12,7 @@ def sign():
 		return 1
 	else:
 		return -1
+
 def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
@@ -144,6 +143,7 @@ class clusterer:
 		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
+
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
 c.inputPlotter()
