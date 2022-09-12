@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import random as rnd
 import time
 import matplotlib.pyplot as plt
 import clusteringAlgo as Algo 
@@ -7,7 +8,13 @@ import subprocess as sub
 from sklearn.datasets import make_blobs
 from varname import nameof
 
-def makeBlobs(nSamples, Ndim, mean=0, dev=0.5):
+def sign():
+	sign = rnd.random()
+	if sign > 0.5:
+		return 1
+	else:
+		return -1
+def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
 		blob_data, blob_labels = make_blobs(n_samples=nSamples)
@@ -19,9 +26,12 @@ def makeBlobs(nSamples, Ndim, mean=0, dev=0.5):
 		return pd.DataFrame(data)
 	if Ndim == 3:
 		data = {'x0': [], 'x1': [], 'x2': [], 'weight': []}
-		z = np.random.normal(mean,dev,100)
+		z = np.random.normal(mean,sigma,100)
+		centers = []
+		for i in range(nBlobs):
+			centers.append([sign()*15*rnd.random(),sign()*15*rnd.random()])
 		for value in z:
-			blob_data, blob_labels = make_blobs(n_samples=nSamples)
+			blob_data, blob_labels = make_blobs(n_samples=nSamples,centers=np.array(centers))
 			for i in range(nSamples):
 				data['x0'] += [blob_data[i][0]]
 				data['x1'] += [blob_data[i][1]]
