@@ -113,8 +113,9 @@ public:
 	return {points_.clusterIndex,points_.isSeed};
   }
 
-  void for_recursion(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<Ndim>& lt_, int point_id) {
-    if(!N_) {
+  template <int N_>
+  void for_recursion(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, tiles<Ndim>& lt_, int point_id) {
+    if constexpr (N_ == 0) {
       int binId = lt_.getGlobalBinByBin(base_vector);
       // get the size of this bin
       int binSize = lt_[binId].size();
@@ -131,16 +132,18 @@ public:
         }
       } // end of interate inside this bin
       return;
-    }
-    for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
-        base_vector[base_vector.size() - N_] = i;
-        for_recursion(N_-1, base_vector, dim_min, dim_max, lt_, point_id);
-    }
+    } else {
+		 for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
+			  base_vector[base_vector.size() - N_] = i;
+			  for_recursion<N_-1>(base_vector, dim_min, dim_max, lt_, point_id);
+		 }
+	 }
   }
 
-  void for_recursion_DistanceToHigher(int N_, std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
+  template <int N_>
+  void for_recursion_DistanceToHigher(std::vector<int> &base_vector,  std::vector<int> &dim_min, std::vector<int> &dim_max, 
     tiles<Ndim>& lt_, float rho_i, float& delta_i, int& nearestHigher_i, int point_id) {
-      if(!N_) {
+      if constexpr (N_ == 0) {
         float dm = outlierDeltaFactor_ * dc_;
 
         int binId = lt_.getGlobalBinByBin(base_vector);
@@ -166,11 +169,12 @@ public:
         } // end of interate inside this bin
 
         return;
-      }
-      for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
-          base_vector[base_vector.size() - N_] = i;
-          for_recursion_DistanceToHigher(N_-1, base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
-      }
+      } else {
+			for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
+				 base_vector[base_vector.size() - N_] = i;
+				 for_recursion_DistanceToHigher<N_-1>(base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
+			}
+		}
   }
 
 private:
@@ -210,7 +214,7 @@ private:
       }
 
       //for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
-      for_recursion(Ndim,binVec,dimMin,dimMax,tiles,i);
+		for_recursion<Ndim>(binVec,dimMin,dimMax,tiles,i);
     } // end of loop over points
   }
 
@@ -244,7 +248,7 @@ private:
           dimMax.push_back(search_box[j]);
         }
       }
-      for_recursion_DistanceToHigher(Ndim,binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
+      for_recursion_DistanceToHigher<Ndim>(binVec,dimMin,dimMax,tiles, rho_i, delta_i, nearestHigher_i, i);
 
       points_.delta[i] = delta_i;
       points_.nearestHigher[i] = nearestHigher_i;
