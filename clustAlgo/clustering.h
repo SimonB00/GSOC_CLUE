@@ -122,18 +122,18 @@ public:
         int j = lt_[binId][binIter];
         // query N_{dc_}(i)
         float dist_ij = distance(point_id, j);
-
         if(dist_ij <= dc_) {
           // sum weights within N_{dc_}(i)
           points_.rho[point_id] += (point_id == j ? 1.f : 0.5f) * points_.weight[j];
         }
       } // end of interate inside this bin
       return;
-    }
-    for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
-        base_vector[base_vector.size() - N_] = i;
-        for_recursion<N_-1>(base_vector, dim_min, dim_max, lt_, point_id);
-    }
+    } else {
+		 for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i) {
+			  base_vector[base_vector.size() - N_] = i;
+			  for_recursion<N_-1>(base_vector, dim_min, dim_max, lt_, point_id);
+		 }
+	 }
   }
 
   // for_recursion used for the function calculateDistanceToHigher
@@ -166,11 +166,12 @@ public:
         } // end of interate inside this bin
 
         return;
-      }
-      for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
-          base_vector[base_vector.size() - N_] = i;
-          for_recursion_DistanceToHigher<N_-1>(base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
-      }
+      } else {
+			for(int i = dim_min[dim_min.size() - N_]; i <= dim_max[dim_max.size() - N_]; ++i){
+				 base_vector[base_vector.size() - N_] = i;
+				 for_recursion_DistanceToHigher<N_-1>(base_vector, dim_min, dim_max, lt_, rho_i, delta_i, nearestHigher_i, point_id);
+			}
+		}
   }
 
   std::string getOutputString(unsigned it, std::array<std::vector<float>,Ndim> const& coordinates, float weight,
