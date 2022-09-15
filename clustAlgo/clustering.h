@@ -2,7 +2,6 @@
 #define CLUEAlgo_h
 
 // C/C++ headers
-//#include <set>
 #include <string>
 #include <vector>
 #include <iostream>

@@ -14,6 +14,9 @@ def sign():
 		return -1
 
 def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
+	"""
+
+	"""
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
 		blob_data, blob_labels = make_blobs(n_samples=nSamples)
@@ -40,7 +43,7 @@ def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 		return pd.DataFrame(data)
 
 class clusterer:
-	def __init__(self, dc, rhoc, outlier, pPBin): 
+	def __init__(self, dc, rhoc, outlier, pPBin=10): 
 		self.dc = dc
 		self.rhoc = rhoc
 		self.outlier = outlier
@@ -84,9 +87,11 @@ class clusterer:
 		finish = time.time_ns()
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
+		self.NClusters = len(list(set(self.clusterId)) - 1)
 
 		elapsed_time = (finish - start)/(10**6)
 		print('CLUE run in ' + str(elapsed_time) + ' ms')
+		print('Number of clusters found: ', self.NClusters)
 	def inputPlotter(self):
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
@@ -143,6 +148,13 @@ class clusterer:
 		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
+	def getclusterPoints(self):
+		clusterPoints = [[] for i in range(len(self.NClusters))]
+
+		for i in range(self.NPoints):
+			clusterPoints[self.clusterId[i]] = i
+
+		self.clusterPoints = clusterPoints
 
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
