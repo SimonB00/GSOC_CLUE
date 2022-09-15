@@ -102,15 +102,19 @@ class clusterer:
 			clusterPoints.append([])
 
 		for i in range(self.Npoints):
-			print(self.clusterId[i])
 			clusterPoints[self.clusterId[i]].append(i)
 
 		self.clusterPoints = clusterPoints
+		self.pointsPerCluster = [len(clust) for clust in clusterPoints]
+		print(self.pointsPerCluster)
 
 		elapsed_time = (finish - start)/(10**6)
 		print('CLUE run in ' + str(elapsed_time) + ' ms')
 		print('Number of clusters found: ', self.NClusters)
 	def inputPlotter(self):
+		"""
+		Plots the the points in input.
+		"""
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
 			plt.show()
@@ -121,6 +125,10 @@ class clusterer:
 
 			plt.show()
 	def clusterPlotter(self):
+		"""
+		Plots the clusters with a different colour for every cluster. 
+		The points assigned to a cluster are printes as points, the seeds as stars and the outliers as little grey crosses. 
+		"""
 		if self.Ndim == 2:
 			data = {'x0':self.coords[0], 'x1':self.coords[1], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
 			df = pd.DataFrame(data)
@@ -158,6 +166,9 @@ class clusterer:
 
 			plt.show()
 	def createOutputFile(self,outputFolder,fileName):
+		"""
+		
+		"""
 		outPath = outputFolder + fileName
 		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
 		df = pd.DataFrame(data)
