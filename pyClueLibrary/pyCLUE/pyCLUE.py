@@ -92,12 +92,15 @@ class clusterer:
 		finish = time.time_ns()
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
-		self.NClusters = len(list(set(self.clusterId))) - 1 
+		self.NClusters = len(list(set(self.clusterId))) 
 
-		clusterPoints = [[] for i in range(self.NClusters)]
+		clusterPoints = []
+		for i in range(self.NClusters):
+			clusterPoints.append([])
 
-		for i in range(self.NPoints):
-			clusterPoints[self.clusterId[i]] = i
+		for i in range(self.Npoints):
+			print(self.clusterId[i])
+			clusterPoints[self.clusterId[i]].append(i)
 
 		self.clusterPoints = clusterPoints
 
@@ -121,9 +124,7 @@ class clusterer:
 
 			df_clindex = df["clusterId"]
 			M = max(df_clindex) 
-			print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
 			dfs = df["isSeed"]
-			print("Number of seeds:", len([el for el in dfs if el == 1]))
 
 			df_out = df[df.clusterId == -1] # Outliers
 			plt.scatter(df_out.x0, df_out.x1, s=5, marker='x', color='0.4')
@@ -139,9 +140,7 @@ class clusterer:
 
 			df_clindex = df["clusterId"]
 			M = max(df_clindex) 
-			print("min, Max clusterId: ", min(df_clindex), max(df_clindex))
 			dfs = df["isSeed"]
-			print("Number of seeds:", len([el for el in dfs if el == 1]))
 			fig = plt.figure()
 			ax = fig.add_subplot(projection='3d')
 
