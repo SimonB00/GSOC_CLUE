@@ -39,7 +39,7 @@ def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 		centers = []
 		for i in range(nBlobs):
 			centers.append([sign()*15*rnd.random(),sign()*15*rnd.random()])
-		for value in z:
+		for value in z: # for every z value, a layer is generated.
 			blob_data, blob_labels = make_blobs(n_samples=nSamples,centers=np.array(centers))
 			for i in range(nSamples):
 				data['x0'] += [blob_data[i][0]]
@@ -179,7 +179,7 @@ class clusterer:
 			ax.scatter(df_seed.x0, df_seed.x1, df_seed.x2, s=20, color = 'r', marker = '*')
 
 			plt.show()
-	def createOutputFile(self,outputFolder,fileName):
+	def toCSV(self,outputFolder,fileName):
 		"""
 		Creates a file containing the coordinates of all the points, their clusterIds and isSeed.	
 

@@ -2,12 +2,9 @@ Metadata-Version: 2.1
 Name: pyCLUE-CERN
 Version: 0.0.1
 Summary: Python library that generalizes the original 2-dimensional CLUE algorithm developed at CERN
-Home-page: UNKNOWN
 Author: Simone Balducci
 Author-email: <simone.balducci00@gmail.com>
-License: UNKNOWN
 Keywords: Python,Clustering,Binding
-Platform: UNKNOWN
 Classifier: Development Status :: Production
 Classifier: Intended Audience :: Developers
 Classifier: Programming Language :: Python :: 3
@@ -15,6 +12,3 @@ Classifier: Operating System :: Unix
 Classifier: Operating System :: MacOS :: MacOS X
 Classifier: Operating System :: Microsoft :: Windows
 License-File: LICENSE
-
-UNKNOWN
-
