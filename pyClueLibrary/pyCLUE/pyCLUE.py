@@ -15,7 +15,7 @@ def sign():
 
 def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 	"""
-
+	Returns a test dataframe containing 2-dimensional or 3-dimensional blobs. 
 	"""
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
@@ -49,6 +49,9 @@ class clusterer:
 		self.outlier = outlier
 		self.pPBin = pPBin
 	def readData(self, inputData):
+	"""
+	Reads the data in input 
+	"""
 		print('Start loading points')
 		
 		# numpy array
@@ -88,6 +91,13 @@ class clusterer:
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
 		self.NClusters = len(list(set(self.clusterId)) - 1)
+
+		clusterPoints = [[] for i in range(len(self.NClusters))]
+
+		for i in range(self.NPoints):
+			clusterPoints[self.clusterId[i]] = i
+
+		self.clusterPoints = clusterPoints
 
 		elapsed_time = (finish - start)/(10**6)
 		print('CLUE run in ' + str(elapsed_time) + ' ms')
@@ -149,12 +159,6 @@ class clusterer:
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
 	def getclusterPoints(self):
-		clusterPoints = [[] for i in range(len(self.NClusters))]
-
-		for i in range(self.NPoints):
-			clusterPoints[self.clusterId[i]] = i
-
-		self.clusterPoints = clusterPoints
 
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
