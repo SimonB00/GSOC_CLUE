@@ -49,9 +49,10 @@ class clusterer:
 		self.outlier = outlier
 		self.pPBin = pPBin
 	def readData(self, inputData):
-	"""
-	Reads the data in input 
-	"""
+		"""
+		Reads the data in input and fills the class members containing the coordinates of the points, the energy weight, the number of dimensions and the number of points.
+		The data can be a numpy array or a native list, containing a list for every coordinates
+		"""
 		print('Start loading points')
 		
 		# numpy array
@@ -90,7 +91,7 @@ class clusterer:
 		finish = time.time_ns()
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
-		self.NClusters = len(list(set(self.clusterId)) - 1)
+		self.NClusters = len(list(set(self.clusterId)) - 1) 
 
 		clusterPoints = [[] for i in range(len(self.NClusters))]
 
