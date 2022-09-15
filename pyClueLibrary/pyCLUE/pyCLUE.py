@@ -51,7 +51,8 @@ class clusterer:
 	def readData(self, inputData):
 		"""
 		Reads the data in input and fills the class members containing the coordinates of the points, the energy weight, the number of dimensions and the number of points.
-		The data can be a numpy array or a native list, containing a list for every coordinates
+		The data can be a numpy array or a native list, containing a list for every coordinate and one for the weight.
+		The data can also be a string, containing the full path to a csv file or a pandas dataframe.
 		"""
 		print('Start loading points')
 		
@@ -91,9 +92,9 @@ class clusterer:
 		finish = time.time_ns()
 		self.clusterId = clusterIdIsSeed[0]
 		self.isSeed = clusterIdIsSeed[1]
-		self.NClusters = len(list(set(self.clusterId)) - 1) 
+		self.NClusters = len(list(set(self.clusterId))) - 1 
 
-		clusterPoints = [[] for i in range(len(self.NClusters))]
+		clusterPoints = [[] for i in range(self.NClusters)]
 
 		for i in range(self.NPoints):
 			clusterPoints[self.clusterId[i]] = i
