@@ -167,7 +167,7 @@ class clusterer:
 			plt.show()
 	def createOutputFile(self,outputFolder,fileName):
 		"""
-		
+		Creates a file containing the coordinates of all the points, their clusterIds and isSeed.	
 		"""
 		outPath = outputFolder + fileName
 		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
@@ -175,7 +175,7 @@ class clusterer:
 		df.to_csv(outPath,index=False)
 
 c = clusterer(1.2,40,0.4,3)
-c.readData('../../binding/moon.csv')
+c.readData('../../binding/blob_noise.csv')
 c.inputPlotter()
 c.runCLUE()
 c.clusterPlotter()
