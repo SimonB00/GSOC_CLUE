@@ -158,7 +158,6 @@ class clusterer:
 		data = {'x0':self.coords[0], 'x1':self.coords[1], 'x2':self.coords[2], 'clusterId':self.clusterId, 'isSeed':self.isSeed}
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
-	def getclusterPoints(self):
 
 c = clusterer(1.2,40,0.4,3)
 c.readData('../../binding/moon.csv')
