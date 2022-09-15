@@ -87,6 +87,9 @@ class clusterer:
 
 		print('Finished loading points')
 	def runCLUE(self):
+		"""
+		Executes the CLUE clustering algorithm.
+		"""
 		start = time.time_ns()
 		clusterIdIsSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)
 		finish = time.time_ns()
