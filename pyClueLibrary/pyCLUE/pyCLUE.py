@@ -50,6 +50,76 @@ def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 
 		return pd.DataFrame(data)
 
+def testdata(Ndim):
+	j = 0	
+	if Ndim == 2:
+		data = {'x0': [], 'x1': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 3:
+		data = {'x0': [], 'x1': [], 'x2': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 4:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 5:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 6:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x5'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 7:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x5'] += list(np.random.normal(j,0.2,1000))
+			data['x6'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 8:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x5'] += list(np.random.normal(j,0.2,1000))
+			data['x6'] += list(np.random.normal(j,0.2,1000))
+			data['x7'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	data['weight'] = [1 for i in range(len(data['x0']))]
+
+	df = pd.DataFrame(data)
+	return df
+
 class clusterer:
 	def __init__(self, dc, rhoc, outlier, pPBin=10): 
 		self.dc = dc
@@ -127,8 +197,8 @@ class clusterer:
 		data = {'clusterIds': self.clusterIds, 'isSeed': self.isSeed}
 		self.outputDF = pd.DataFrame(data) 
 
-		elapsed_time = (finish - start)/(10**6)
-		print('CLUE run in ' + str(elapsed_time) + ' ms')
+		self.elapsed_time = (finish - start)/(10**6)
+		print('CLUE run in ' + str(self.elapsed_time) + ' ms')
 		print('Number of clusters found: ', self.NClusters)
 	def inputPlotter(self):
 		"""
@@ -138,7 +208,7 @@ class clusterer:
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
 			plt.show()
-		if self.Ndim == 3:
+		if self.Ndim >= 3:
 			fig = plt.figure()
 			ax = fig.add_subplot(projection='3d')
 			ax.scatter(self.coords[0],self.coords[1],self.coords[2])
@@ -206,8 +276,47 @@ class clusterer:
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
 
-c = clusterer(1.2,40,0.4,3)
-c.readData('../../data/input/blob_noise.csv')
-c.inputPlotter()
-c.runCLUE()
-c.clusterPlotter()
+t2 = 0
+t3 = 0
+t4 = 0
+t5 = 0
+t6 = 0
+t7 = 0
+t8 = 0
+for i in range(10):
+	c = clusterer(1,40,1.2)
+	c.readData(testdata(2))
+	c.runCLUE()
+	t2 += c.elapsed_time
+	d = clusterer(1,40,1.2)
+	d.readData(testdata(3))
+	d.runCLUE()
+	t3 += d.elapsed_time
+	e = clusterer(1,40,1.2)
+	e.readData(testdata(4))
+	e.runCLUE()
+	t4 += e.elapsed_time
+	f = clusterer(1,50,1.5)
+	f.readData(testdata(5))
+	f.runCLUE()
+	t5 += f.elapsed_time
+	g = clusterer(1,50,1.5)
+	g.readData(testdata(6))
+	g.runCLUE()
+	t6 += g.elapsed_time
+	h = clusterer(1,50,1.5)
+	h.readData(testdata(7))
+	h.runCLUE()
+	t7 += h.elapsed_time
+	i = clusterer(1,60,1.8)
+	i.readData(testdata(8))
+	i.runCLUE()
+	t8 += i.elapsed_time
+
+print(t2/10)
+print(t3/10)
+print(t4/10)
+print(t5/10)
+print(t6/10)
+print(t7/10)
+print(t8/10)
