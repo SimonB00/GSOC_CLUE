@@ -24,6 +24,7 @@ def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 	mean (float): The mean of the gaussian distribution of the z values.
 	sigma (float): The standard deviation of the gaussian distribution of the z values.
 	"""
+
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
 		blob_data, blob_labels = make_blobs(n_samples=nSamples)
@@ -64,6 +65,7 @@ class clusterer:
 		inputData (string): The string should contain the full path to a csv file containing the data.
 		inputData (list or numpy array): The list or numpy array should contain a list of lists for the coordinates and a list for the weight.
 		"""
+
 		print('Start loading points')
 		
 		# numpy array
@@ -107,6 +109,7 @@ class clusterer:
 		self.clusterPoints (list): Contains, for every cluster, the list of points associated to id.
 		self.pointsPerCluster (list): Contains the number of points associated to every cluster
 		"""
+
 		start = time.time_ns()
 		clusterIdIsSeed = Algo.mainRun(self.dc,self.rhoc,self.outlier,self.pPBin,self.coords,self.weight,self.Ndim)
 		finish = time.time_ns()
@@ -121,6 +124,9 @@ class clusterer:
 		self.clusterPoints = clusterPoints
 		self.pointsPerCluster = [len(clust) for clust in clusterPoints]
 
+		data = {'clusterIds': self.clusterIds, 'isSeed': self.isSeed}
+		self.outputDF = pd.DataFrame(data) 
+
 		elapsed_time = (finish - start)/(10**6)
 		print('CLUE run in ' + str(elapsed_time) + ' ms')
 		print('Number of clusters found: ', self.NClusters)
@@ -128,6 +134,7 @@ class clusterer:
 		"""
 		Plots the the points in input.
 		"""
+
 		if self.Ndim == 2:
 			plt.scatter(self.coords[0],self.coords[1], s=1)
 			plt.show()
@@ -143,6 +150,7 @@ class clusterer:
 
 		The points assigned to a cluster are prints as points, the seeds as stars and the outliers as little grey crosses. 
 		"""
+		
 		if self.Ndim == 2:
 			data = {'x0':self.coords[0], 'x1':self.coords[1], 'clusterIds':self.clusterIds, 'isSeed':self.isSeed}
 			df = pd.DataFrame(data)
@@ -187,6 +195,7 @@ class clusterer:
 		outputFolder (string): Full path to the desired ouput folder.
 		fileName(string): Name of the file, with the '.csv' suffix.
 		"""
+
 		outPath = outputFolder + fileName
 		data = {}
 		for i in range(self.Ndim):
@@ -198,7 +207,7 @@ class clusterer:
 		df.to_csv(outPath,index=False)
 
 c = clusterer(1.2,40,0.4,3)
-c.readData('../../binding/blob_noise.csv')
+c.readData('../../data/input/blob_noise.csv')
 c.inputPlotter()
 c.runCLUE()
 c.clusterPlotter()
