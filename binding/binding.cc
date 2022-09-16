@@ -1,6 +1,5 @@
 #include <pybind11/pybind11.h>
-#include "../clustAlgo/clustering.h"
-#include "../clustAlgo/main.cc"
+#include "../clustAlgo/run.h"
 #include <pybind11/stl.h> 
 
 PYBIND11_MODULE(clusteringAlgo, m) {

@@ -107,6 +107,3 @@ std::vector<std::vector<int>> mainRun(float dc, float rhoc, float outlier, int p
 		return run10(dc,rhoc,outlier,pPBin,coords,weight);
 	} 
 }
-
-int main(int argc, char *argv[]) {
-}
