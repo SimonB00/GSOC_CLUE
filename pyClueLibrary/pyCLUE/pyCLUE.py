@@ -115,6 +115,33 @@ def testdata(Ndim):
 			data['x6'] += list(np.random.normal(j,0.2,1000))
 			data['x7'] += list(np.random.normal(j,0.2,1000))
 			j += 2
+	if Ndim == 9:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'x8': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x5'] += list(np.random.normal(j,0.2,1000))
+			data['x6'] += list(np.random.normal(j,0.2,1000))
+			data['x7'] += list(np.random.normal(j,0.2,1000))
+			data['x8'] += list(np.random.normal(j,0.2,1000))
+			j += 2
+	if Ndim == 10:
+		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'x8': [], 'x9': [], 'weight': []}
+		for i in range(3):
+			data['x0'] += list(np.random.normal(j,0.2,1000))
+			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x5'] += list(np.random.normal(j,0.2,1000))
+			data['x6'] += list(np.random.normal(j,0.2,1000))
+			data['x7'] += list(np.random.normal(j,0.2,1000))
+			data['x8'] += list(np.random.normal(j,0.2,1000))
+			data['x9'] += list(np.random.normal(j,0.2,1000))
+			j += 2
 	data['weight'] = [1 for i in range(len(data['x0']))]
 
 	df = pd.DataFrame(data)
@@ -283,6 +310,8 @@ t5 = 0
 t6 = 0
 t7 = 0
 t8 = 0
+t9 = 0
+t10 = 0
 for i in range(10):
 	c = clusterer(1,40,1.2)
 	c.readData(testdata(2))
@@ -312,6 +341,14 @@ for i in range(10):
 	i.readData(testdata(8))
 	i.runCLUE()
 	t8 += i.elapsed_time
+	j = clusterer(1,60,1.8)
+	j.readData(testdata(9))
+	j.runCLUE()
+	t9 += j.elapsed_time
+	k = clusterer(1,60,1.8)
+	k.readData(testdata(10))
+	k.runCLUE()
+	t10 += k.elapsed_time
 
 print(t2/10)
 print(t3/10)
@@ -320,3 +357,5 @@ print(t5/10)
 print(t6/10)
 print(t7/10)
 print(t8/10)
+print(t9/10)
+print(t10/10)
