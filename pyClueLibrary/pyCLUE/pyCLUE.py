@@ -50,7 +50,7 @@ def makeBlobs(nSamples, Ndim, nBlobs=4, mean=0, sigma=0.5):
 
 		return pd.DataFrame(data)
 
-def testdata(Ndim):
+def testdata(Ndim, noise=False):
 	j = 0	
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
@@ -325,27 +325,27 @@ for i in range(10):
 	e.readData(testdata(4))
 	e.runCLUE()
 	t4 += e.elapsed_time
-	f = clusterer(1,50,1.5)
+	f = clusterer(1,40,1.2)
 	f.readData(testdata(5))
 	f.runCLUE()
 	t5 += f.elapsed_time
-	g = clusterer(1,50,1.5)
+	g = clusterer(1,40,1.2)
 	g.readData(testdata(6))
 	g.runCLUE()
 	t6 += g.elapsed_time
-	h = clusterer(1,50,1.5)
+	h = clusterer(1,40,1.2)
 	h.readData(testdata(7))
 	h.runCLUE()
 	t7 += h.elapsed_time
-	i = clusterer(1,60,1.8)
+	i = clusterer(1,40,1.2)
 	i.readData(testdata(8))
 	i.runCLUE()
 	t8 += i.elapsed_time
-	j = clusterer(1,60,1.8)
+	j = clusterer(1,40,1.2)
 	j.readData(testdata(9))
 	j.runCLUE()
 	t9 += j.elapsed_time
-	k = clusterer(1,60,1.8)
+	k = clusterer(1,40,1.2)
 	k.readData(testdata(10))
 	k.runCLUE()
 	t10 += k.elapsed_time
