@@ -55,92 +55,92 @@ def testdata(Ndim, noise=False):
 	if Ndim == 2:
 		data = {'x0': [], 'x1': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 3:
 		data = {'x0': [], 'x1': [], 'x2': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 4:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 5:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 6:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
-			data['x5'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
+			data['x5'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 7:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
-			data['x5'] += list(np.random.normal(j,0.2,1000))
-			data['x6'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
+			data['x5'] += list(np.random.normal(j,0.2,10000))
+			data['x6'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 8:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
-			data['x5'] += list(np.random.normal(j,0.2,1000))
-			data['x6'] += list(np.random.normal(j,0.2,1000))
-			data['x7'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
+			data['x5'] += list(np.random.normal(j,0.2,10000))
+			data['x6'] += list(np.random.normal(j,0.2,10000))
+			data['x7'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 9:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'x8': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
-			data['x5'] += list(np.random.normal(j,0.2,1000))
-			data['x6'] += list(np.random.normal(j,0.2,1000))
-			data['x7'] += list(np.random.normal(j,0.2,1000))
-			data['x8'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
+			data['x5'] += list(np.random.normal(j,0.2,10000))
+			data['x6'] += list(np.random.normal(j,0.2,10000))
+			data['x7'] += list(np.random.normal(j,0.2,10000))
+			data['x8'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	if Ndim == 10:
 		data = {'x0': [], 'x1': [], 'x2': [], 'x3': [], 'x4': [], 'x5': [], 'x6': [], 'x7': [], 'x8': [], 'x9': [], 'weight': []}
 		for i in range(3):
-			data['x0'] += list(np.random.normal(j,0.2,1000))
-			data['x1'] += list(np.random.normal(j,0.2,1000))
-			data['x2'] += list(np.random.normal(j,0.2,1000))
-			data['x3'] += list(np.random.normal(j,0.2,1000))
-			data['x4'] += list(np.random.normal(j,0.2,1000))
-			data['x5'] += list(np.random.normal(j,0.2,1000))
-			data['x6'] += list(np.random.normal(j,0.2,1000))
-			data['x7'] += list(np.random.normal(j,0.2,1000))
-			data['x8'] += list(np.random.normal(j,0.2,1000))
-			data['x9'] += list(np.random.normal(j,0.2,1000))
+			data['x0'] += list(np.random.normal(j,0.2,10000))
+			data['x1'] += list(np.random.normal(j,0.2,10000))
+			data['x2'] += list(np.random.normal(j,0.2,10000))
+			data['x3'] += list(np.random.normal(j,0.2,10000))
+			data['x4'] += list(np.random.normal(j,0.2,10000))
+			data['x5'] += list(np.random.normal(j,0.2,10000))
+			data['x6'] += list(np.random.normal(j,0.2,10000))
+			data['x7'] += list(np.random.normal(j,0.2,10000))
+			data['x8'] += list(np.random.normal(j,0.2,10000))
+			data['x9'] += list(np.random.normal(j,0.2,10000))
 			j += 2
 	data['weight'] = [1 for i in range(len(data['x0']))]
 
@@ -163,7 +163,7 @@ class clusterer:
 		inputData (list or numpy array): The list or numpy array should contain a list of lists for the coordinates and a list for the weight.
 		"""
 
-		print('Start loading points')
+		print('Start reading points')
 		
 		# numpy array
 		if type(inputData) == np.array:
@@ -194,7 +194,7 @@ class clusterer:
 			self.weight = list(df['weight'])
 			self.Npoints = len(self.weight)
 
-		print('Finished loading points')
+		print('Finished reading points')
 	def runCLUE(self):
 		"""
 		Executes the CLUE clustering algorithm.
@@ -303,59 +303,68 @@ class clusterer:
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
 
-t2 = 0
-t3 = 0
-t4 = 0
-t5 = 0
-t6 = 0
-t7 = 0
-t8 = 0
-t9 = 0
-t10 = 0
-for i in range(10):
+t2 = []
+t3 = []
+t4 = []
+t5 = []
+t6 = []
+t7 = []
+t8 = []
+t9 = []
+t10 = []
+for i in range(4):
 	c = clusterer(1,40,1.2)
 	c.readData(testdata(2))
 	c.runCLUE()
-	t2 += c.elapsed_time
+	t2.append(c.elapsed_time)
 	d = clusterer(1,40,1.2)
 	d.readData(testdata(3))
 	d.runCLUE()
-	t3 += d.elapsed_time
+	t3.append(d.elapsed_time)
 	e = clusterer(1,40,1.2)
 	e.readData(testdata(4))
 	e.runCLUE()
-	t4 += e.elapsed_time
+	t4.append(e.elapsed_time)
 	f = clusterer(1,40,1.2)
 	f.readData(testdata(5))
 	f.runCLUE()
-	t5 += f.elapsed_time
+	t5.append(f.elapsed_time)
 	g = clusterer(1,40,1.2)
 	g.readData(testdata(6))
 	g.runCLUE()
-	t6 += g.elapsed_time
+	t6.append(g.elapsed_time)
 	h = clusterer(1,40,1.2)
 	h.readData(testdata(7))
 	h.runCLUE()
-	t7 += h.elapsed_time
+	t7.append(h.elapsed_time)
 	i = clusterer(1,40,1.2)
 	i.readData(testdata(8))
 	i.runCLUE()
-	t8 += i.elapsed_time
+	t8.append(i.elapsed_time)
 	j = clusterer(1,40,1.2)
 	j.readData(testdata(9))
 	j.runCLUE()
-	t9 += j.elapsed_time
+	t9.append(j.elapsed_time)
 	k = clusterer(1,40,1.2)
 	k.readData(testdata(10))
 	k.runCLUE()
-	t10 += k.elapsed_time
+	t10.append(k.elapsed_time)
 
-print(t2/10)
-print(t3/10)
-print(t4/10)
-print(t5/10)
-print(t6/10)
-print(t7/10)
-print(t8/10)
-print(t9/10)
-print(t10/10)
+print('time2', sum(t2)/4)
+print('error2', np.std(t2))
+print('time3', sum(t3)/4)
+print('error3', np.std(t3))
+print('time4', sum(t4)/4)
+print('error4', np.std(t4))
+print('time5', sum(t5)/4)
+print('error5', np.std(t5))
+print('time6', sum(t6)/4)
+print('error6', np.std(t6))
+print('time7', sum(t7)/4)
+print('error7', np.std(t7))
+print('time8', sum(t8)/4)
+print('error8', np.std(t8))
+print('time9', sum(t9)/4)
+print('error9', np.std(t9))
+print('time10', sum(t10)/4)
+print('error10', np.std(t10))
