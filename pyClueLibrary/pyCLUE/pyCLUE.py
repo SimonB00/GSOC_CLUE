@@ -351,6 +351,11 @@ class clusterer:
 
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
+
+c = clusterer(1,40,1.2)
+c.readData(testdata(2))
+c.runCLUE()
+c.clusterPlotter()
 """
 t2 = []
 t3 = []
