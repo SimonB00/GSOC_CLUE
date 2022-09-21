@@ -150,17 +150,17 @@ def testdata(Ndim, noise=False):
 class clusterer:
 	def __init__(self, dc, rhoc, outlier, pPBin=10): 
 		try:
-			if type(dc) != float or type(dc) != int:
+			if float(dc) != dc:
 				raise ValueError('The dc parameter must be a float')
 			self.dc = dc
-			if type(rhoc) != float or type(rhoc) != int:
+			if float(rhoc) != rhoc:
 				raise ValueError('The rhoc parameter must be a float')
 			self.rhoc = rhoc
-			if type(outlier) != float or type(outlier) != int:
+			if float(outlier) != outlier:
 				raise ValueError('The outlier parameter must be a float')
 			self.outlier = outlier
-			if type(pPBin) != float or type(pPBin) != int:
-				raise ValueError('The pPBin parameter must be a float')
+			if type(pPBin) != int:
+				raise ValueError('The pPBin parameter must be a int')
 			self.pPBin = pPBin
 		except ValueError as ve:
 			print(ve)
