@@ -149,10 +149,22 @@ def testdata(Ndim, noise=False):
 
 class clusterer:
 	def __init__(self, dc, rhoc, outlier, pPBin=10): 
-		self.dc = dc
-		self.rhoc = rhoc
-		self.outlier = outlier
-		self.pPBin = pPBin
+		try:
+			if type(dc) != float or type(dc) != int:
+				raise TypeError('The dc parameter must be a float')
+			self.dc = dc
+			if type(rhoc) != float or type(rhoc) != int:
+				raise TypeError('The rhoc parameter must be a float')
+			self.rhoc = rhoc
+			if type(outlier) != float or type(outlier) != int:
+				raise TypeError('The outlier parameter must be a float')
+			self.outlier = outlier
+			if type(pPBin) != float or type(pPBin) != int:
+				raise TypeError('The pPBin parameter must be a float')
+			self.pPBin = pPBin
+		except TypeError as te:
+			print(te)
+			quit()
 	def readData(self, inputData):
 		"""
 		Reads the data in input and fills the class members containing the coordinates of the points, the energy weight, the number of dimensions and the number of points.
@@ -167,32 +179,66 @@ class clusterer:
 		
 		# numpy array
 		if type(inputData) == np.array:
-			self.coords = [coord for coord in self.inputData[:-1]]
-			self.weight = self.inputData[-1] 
-			self.Ndim = len(self.inputData[:-1])
-			self.Npoints = len(self.weight)
+			try:
+				if len(inputData) < 2:
+					raise ValueError('Error: Inadequate data. The data must contain at least one coordinate and the energy.')
+				self.coords = [coord for coord in self.inputData[:-1]]
+				self.weight = self.inputData[-1] 
+				if len(self.inputData[:-1]) > 10:
+					raise ValueError('Error: The maximum number of dimensions supported is 10')
+				self.Ndim = len(self.inputData[:-1])
+				self.Npoints = len(self.weight)
+			except ValueError as ve:
+				print(ve)
+				quit()
 
 		# lists
 		if type(inputData) == list:
-			self.coords = [coord for coord in self.inputData[:-1]]
-			self.weight = self.inputData[-1]
-			self.Ndim = len(self.inputData[:-1])
-			self.Npoints = len(self.weight)
+			try:
+				if len(inputData) < 2:
+					raise ValueError('Error: Inadequate data. The data must contain at least one coordinate and the energy.')
+				self.coords = [coord for coord in self.inputData[:-1]]
+				self.weight = self.inputData[-1]
+				if len(self.inputData[:-1]) > 10:
+					raise ValueError('Error: The maximum number of dimensions supported is 10')
+				self.Ndim = len(self.inputData[:-1])
+				self.Npoints = len(self.weight)
+			except ValueError as ve:
+				print(ve)
+				quit()
 
 		# path to .csv file or pandas dataframe
 		if type(inputData) == str or type(inputData) == pd.DataFrame:
 			if type(inputData) == str:
-				df = pd.read_csv(inputData)
+				try:
+					if inputData[-3:] != 'csv':
+						raise ValueError('Error: The file is not a csv file.')
+					df = pd.read_csv(inputData)
+				except ValueError as ve:
+					print(ve)
+					quit()
 			if type(inputData) == pd.DataFrame:
-				df = inputData
+				try:
+					if len(inputData.columns) < 2:
+						raise ValueError('Error: Inadequate data. The data must contain at least one coordinate and the energy.')
+					df = inputData
+				except ValueError as ve:
+					print(ve)
+					quit()
 
-			coordinate_columns = [col for col in df.columns if col[0] == 'x']
-			self.Ndim = len(coordinate_columns)
-			self.coords = []
-			for col in coordinate_columns:
-				self.coords.append(list(df[col]))
-			self.weight = list(df['weight'])
-			self.Npoints = len(self.weight)
+			try:
+				coordinate_columns = [col for col in df.columns if col[0] == 'x']
+				if len(coordinate_columns) > 10:	
+					raise ValueError('Error: The maximum number of dimensions supported is 10')
+				self.Ndim = len(coordinate_columns)
+				self.coords = []
+				for col in coordinate_columns:
+					self.coords.append(list(df[col]))
+				self.weight = list(df['weight'])
+				self.Npoints = len(self.weight)
+			except ValueError as ve:
+				print(ve)
+				quit()
 
 		print('Finished reading points')
 	def runCLUE(self):
