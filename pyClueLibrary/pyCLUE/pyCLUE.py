@@ -151,19 +151,19 @@ class clusterer:
 	def __init__(self, dc, rhoc, outlier, pPBin=10): 
 		try:
 			if type(dc) != float or type(dc) != int:
-				raise TypeError('The dc parameter must be a float')
+				raise ValueError('The dc parameter must be a float')
 			self.dc = dc
 			if type(rhoc) != float or type(rhoc) != int:
-				raise TypeError('The rhoc parameter must be a float')
+				raise ValueError('The rhoc parameter must be a float')
 			self.rhoc = rhoc
 			if type(outlier) != float or type(outlier) != int:
-				raise TypeError('The outlier parameter must be a float')
+				raise ValueError('The outlier parameter must be a float')
 			self.outlier = outlier
 			if type(pPBin) != float or type(pPBin) != int:
-				raise TypeError('The pPBin parameter must be a float')
+				raise ValueError('The pPBin parameter must be a float')
 			self.pPBin = pPBin
-		except TypeError as te:
-			print(te)
+		except ValueError as ve:
+			print(ve)
 			quit()
 	def readData(self, inputData):
 		"""
@@ -348,7 +348,7 @@ class clusterer:
 
 		df = pd.DataFrame(data)
 		df.to_csv(outPath,index=False)
-
+"""
 t2 = []
 t3 = []
 t4 = []
@@ -414,3 +414,4 @@ print('time9', sum(t9)/4)
 print('error9', np.std(t9))
 print('time10', sum(t10)/4)
 print('error10', np.std(t10))
+"""
