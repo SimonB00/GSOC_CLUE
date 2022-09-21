@@ -164,7 +164,7 @@ class clusterer:
 			self.pPBin = pPBin
 		except ValueError as ve:
 			print(ve)
-			quit()
+			exit()
 	def readData(self, inputData):
 		"""
 		Reads the data in input and fills the class members containing the coordinates of the points, the energy weight, the number of dimensions and the number of points.
@@ -190,7 +190,7 @@ class clusterer:
 				self.Npoints = len(self.weight)
 			except ValueError as ve:
 				print(ve)
-				quit()
+				exit()
 
 		# lists
 		if type(inputData) == list:
@@ -205,7 +205,7 @@ class clusterer:
 				self.Npoints = len(self.weight)
 			except ValueError as ve:
 				print(ve)
-				quit()
+				exit()
 
 		# path to .csv file or pandas dataframe
 		if type(inputData) == str or type(inputData) == pd.DataFrame:
@@ -216,7 +216,7 @@ class clusterer:
 					df = pd.read_csv(inputData)
 				except ValueError as ve:
 					print(ve)
-					quit()
+					exit()
 			if type(inputData) == pd.DataFrame:
 				try:
 					if len(inputData.columns) < 2:
@@ -224,9 +224,12 @@ class clusterer:
 					df = inputData
 				except ValueError as ve:
 					print(ve)
-					quit()
+					exit()
 
 			try:
+				if not 'weight' in df.columns:
+					raise ValueError('Error: The input dataframe must contain a weight column.')
+					
 				coordinate_columns = [col for col in df.columns if col[0] == 'x']
 				if len(coordinate_columns) > 10:	
 					raise ValueError('Error: The maximum number of dimensions supported is 10')
@@ -238,7 +241,7 @@ class clusterer:
 				self.Npoints = len(self.weight)
 			except ValueError as ve:
 				print(ve)
-				quit()
+				exit()
 
 		print('Finished reading points')
 	def runCLUE(self):
