@@ -3,6 +3,8 @@
 \usepackage{pifont}
 \usepackage{pgffor}
 \usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{mathabx}
 
 \usetheme{Madrid}
 \usecolortheme{default}
@@ -23,6 +25,7 @@ The goals of this project were to:
 \begin{itemize}
 	\item Generalize CLUE to N dimensions
 	\item Bind the algorithm to Python
+	\item Write a Python class ``clusterer" that executes CLUE
 	\item Deploy the algorithm to a PyPi library
 \end{itemize}
 \end{frame}
@@ -30,6 +33,7 @@ The goals of this project were to:
 \frametitle{Generalization to N dimensions}
 To generalize the code, several steps were needed:
 \begin{itemize}
+	\item add the number of dimensions, Ndim, as a template parameter for all the classes
 	\item introduce a new metric $\longrightarrow$ N-dimensional euclidian metric
 	\item remove the parameters specific to the detector's geometry
 	\item redefine the tiles
@@ -40,8 +44,15 @@ To generalize the code, several steps were needed:
 \begin{frame}
 \frametitle{Tiles}
 \begin{itemize}
+	\item originally, the tiles where calculated based on the detector's geometry
+	\begin{itemize}
+		\item[\ding{228}] now we want them to be calculated based on the points	
+	\end{itemize}
 	\item the number of tiles is calculated based on the desired average number of points per tile $\longrightarrow$ new constructor's input parameter
 	\item the size of the tiles in each dimensions is calculated depending on the coordinate's range
+	$$
+		NTiles = 10, \ x_{min} = 1, \ x_{max} = 4 \ \longrightarrow \ \boxed{xbin_{size} = 0.3}
+	$$
 	\item the resulting tiles are all identical parallelepipeds
 \end{itemize}
 \end{frame}
@@ -74,7 +85,7 @@ To generalize the code, several steps were needed:
 \begin{itemize}
 	\item in C++ template parameters must be known at compile time
 	\item in order to bind mainRun, the number of dimensions can't be a variable
-	\item we define many "run" functions, for which Ndim is known and constant
+	\item we define many ``run" functions, for which Ndim is known and constant
 \end{itemize}
 \begin{center}
 	\includegraphics[scale=0.3]{run.png}
